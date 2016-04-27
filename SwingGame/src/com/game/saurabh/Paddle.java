@@ -14,7 +14,7 @@ public class Paddle {
     private int dy;
     private int x;
     private int y;
-    
+    private int lives;
 public Paddle() {
         
         initPaddle();
@@ -24,7 +24,8 @@ public Paddle() {
         
         
         x = 150;
-        y = 260;        
+        y = 260;
+        lives = 3;
     }
 
 
@@ -35,6 +36,13 @@ public Paddle() {
     		}
     	
         
+    }
+    public int getLives() {
+    	
+        return lives;
+    }
+    public void reduLives(){
+    	lives += -1;
     }
 
     public int getX() {
