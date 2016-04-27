@@ -1,4 +1,4 @@
-package com.game.saurabh;
+package game;
 
 import java.awt.Image;
 
@@ -14,7 +14,7 @@ public class Paddle {
     private int dy;
     private int x;
     private int y;
-    
+    private int lives;
 public Paddle() {
         
         initPaddle();
@@ -24,17 +24,25 @@ public Paddle() {
         
         
         x = 150;
-        y = 360;        
+        y = 260;
+        lives = 3;
     }
 
 
     public void move() {
     	
     		if(dx != 0){
-    			x += 2*dx;
+    			x += dx;
     		}
     	
         
+    }
+    public int getLives() {
+    	
+        return lives;
+    }
+    public void reduLives(){
+    	lives += -1;
     }
 
     public int getX() {
@@ -61,7 +69,7 @@ public Paddle() {
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-        	if(x < 180){
+        	if(x < 200){
         		dx = 1;
         	}else{
         		dx = 0;
@@ -100,6 +108,4 @@ public Paddle() {
     public Rectangle getBounds() {
         return new Rectangle(x, y, 150, 10);
     }
-    
-    
 }

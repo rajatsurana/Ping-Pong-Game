@@ -55,6 +55,7 @@ public class Board extends JPanel implements ActionListener {
     	g.fillRect(paddle.getX(), paddle.getY(), 150, 10);
     	g.setColor(Color.blue);
     	g.fillOval(ball.getX(), ball.getY(), 25, 25);
+    	g.dispose();
     }
 
     @Override
@@ -85,16 +86,18 @@ public class Board extends JPanel implements ActionListener {
         	double diffX=posBallX-posPaddleX;
         	double alpha, theta;
         	theta = Math.atan(diffX/radius);
-        	System.out.println(diffX+":"+posPaddleX+":"+posBallX);
+        	//System.out.println(theta);
+        	//System.out.println(diffX+":"+posPaddleX+":"+posBallX);
         	double alphaPlusTheta= Math.atan(velX/velY);
         	alpha = alphaPlusTheta-theta;
         	System.out.println(alpha +":"+theta+":"+alphaPlusTheta+"angles");
         	double alphaMinusTheta=alpha-theta;
         	double finalVelY ,finalVelX;
-        	double vel =  2.8284271247461903;//Math.sqrt(velX*velX +velY*velY);
-        	finalVelY= (Math.cos(-alphaMinusTheta))*vel;
+        	double vel =  3*Math.sqrt(2);//velX*velX +velY*velY
+        	finalVelY= (Math.cos(alphaMinusTheta))*vel;
+        	//System.out.println("cos:"+Math.cos(alphaMinusTheta)+":"+Math.tan(-alphaMinusTheta));
         	finalVelX=(Math.tan(-alphaMinusTheta)*finalVelY);
-        	System.out.println(alphaMinusTheta+":"+finalVelY+":"+finalVelX+",vel:"+Math.sqrt(velX*velX +velY*velY));
+        	//System.out.println(alphaMinusTheta+":"+finalVelY+":"+finalVelX+",vel:"+Math.sqrt(velX*velX +velY*velY));
         	ball.setVel(finalVelX,-finalVelY);
         	
         }
