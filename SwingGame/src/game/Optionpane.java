@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.TimerTask;
 
 import multiplayer.info;
 import multiplayer.network;
@@ -22,7 +23,7 @@ public class Optionpane extends JPanel {
 	public final static int DISCONNECTING = 2;
 	public final static int BEGIN_CONNECT = 3;
 	public final static int CONNECTED = 4;
-
+	public network network;
 	// Other constants
 	public final static String statusMessages[] = {
 			" Error! Could not connect!", " Disconnected", " Disconnecting...",
@@ -52,6 +53,8 @@ public class Optionpane extends JPanel {
 	public static JTextField portField = null;
 	public static JTextField hnameField = null;
 	public static JTextField hportField = null;
+	public static JTextField maxPlayerField = null;
+	public static JTextField playerJoinedField = null;
 	public static JRadioButton hostOption = null;
 	public static JRadioButton guestOption = null;
 	public static JButton connectButton = null;
@@ -95,12 +98,6 @@ public class Optionpane extends JPanel {
 		nameField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 
-				// ipField.selectAll();
-				// Should be editable only when disconnected
-				/*
-				 * if (connectionStatus != DISCONNECTED) { changeStatusNTS(NULL,
-				 * true); } else { hostIP = ipField.getText(); }
-				 */
 			}
 		});
 		pane.add(nameField);
@@ -116,12 +113,6 @@ public class Optionpane extends JPanel {
 				hnameField.addFocusListener(new FocusAdapter() {
 					public void focusLost(FocusEvent e) {
 
-						// ipField.selectAll();
-						// Should be editable only when disconnected
-						/*
-						 * if (connectionStatus != DISCONNECTED) { changeStatusNTS(NULL,
-						 * true); } else { hostIP = ipField.getText(); }
-						 */
 					}
 				});
 				pane.add(hnameField);
@@ -135,14 +126,7 @@ public class Optionpane extends JPanel {
 		portField.setText("");
 		portField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
-				// should be editable only when disconnected
-				/*
-				 * if (connectionStatus != DISCONNECTED) { changeStatusNTS(NULL,
-				 * true); } else { int temp; try { temp =
-				 * Integer.parseInt(portField.getText()); port = temp; } catch
-				 * (NumberFormatException nfe) { portField.setText((new
-				 * Integer(port)).toString()); mainFrame.repaint(); } }
-				 */
+				
 			}
 		});
 		pane.add(portField);
@@ -156,14 +140,7 @@ public class Optionpane extends JPanel {
 				hportField.setText("");
 				hportField.addFocusListener(new FocusAdapter() {
 					public void focusLost(FocusEvent e) {
-						// should be editable only when disconnected
-						/*
-						 * if (connectionStatus != DISCONNECTED) { changeStatusNTS(NULL,
-						 * true); } else { int temp; try { temp =
-						 * Integer.parseInt(portField.getText()); port = temp; } catch
-						 * (NumberFormatException nfe) { portField.setText((new
-						 * Integer(port)).toString()); mainFrame.repaint(); } }
-						 */
+						
 					}
 				});
 				pane.add(hportField);
@@ -172,18 +149,13 @@ public class Optionpane extends JPanel {
 		// Host/guest option
 		buttonListener = new ActionAdapter() {
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * if (connectionStatus != DISCONNECTED) { changeStatusNTS(NULL,
-				 * true); } else { isHost = e.getActionCommand().equals("host");
-				 * 
-				 * // Cannot supply host IP if host option is chosen if (isHost)
-				 * { ipField.setEnabled(false); ipField.setText("localhost");
-				 * hostIP = "localhost"; } else { ipField.setEnabled(true); } }
-				 */
+				
 				isHost = e.getActionCommand().equals("host");
 				if (isHost) {
 					ipField.setEnabled(false);
-					
+					maxPlayerField.setEnabled(true);
+					maxPlayerField.setText("");
+					playerJoinedField.setEnabled(false);
 					nameField.setEnabled(false);
 					portField.setEnabled(false);
 					ipField.setText("localhost");
@@ -195,9 +167,11 @@ public class Optionpane extends JPanel {
 					nameField.setEnabled(true);
 					nameField.setEnabled(true);
 					portField.setEnabled(true);
-					
-					
 					hportField.setEnabled(true);
+					maxPlayerField.setText("10");
+					maxPlayerField.setEnabled(false);
+					
+					playerJoinedField.setEnabled(false);
 				}
 			}
 		};
@@ -216,24 +190,37 @@ public class Optionpane extends JPanel {
 		pane.add(hostOption);
 		pane.add(guestOption);
 		add(pane);
+		pane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pane.add(new JLabel("MaxPlayers:"));
+		maxPlayerField = new JTextField(10);
+		maxPlayerField.setText("");
+		maxPlayerField.setEnabled(true);
+		maxPlayerField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
 
+			}
+		});
+		pane.add(maxPlayerField);
+		add(pane);
+		pane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pane.add(new JLabel("Joined:"));
+		playerJoinedField = new JTextField(10);
+		playerJoinedField.setText("0");
+		playerJoinedField.setEnabled(false);
+		playerJoinedField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+
+			}
+		});
+		pane.add(playerJoinedField);
+		add(pane);
 		// Connect/disconnect buttons
 		JPanel buttonPane = new JPanel(new GridLayout(1, 2));
 		buttonListener = new ActionAdapter() {
 			public void actionPerformed(ActionEvent e) {
-				// Request a connection initiation
-				/*
-				 * if (e.getActionCommand().equals("connect")) {
-				 * changeStatusNTS(BEGIN_CONNECT, true); } // Disconnect else {
-				 * changeStatusNTS(DISCONNECTING, true); }
-				 */
+			
 				String name, ip, port,hostport,hostname,hostip;
-				//name = nameField.getText();
-				//ip="";
-				//port = portField.getText();
 				
-
-				//System.out.println(name + " " + ip + " " + port);
 				if (isHost) {
 					try {
 						System.out.println(Inet4Address.getLocalHost().getHostAddress());
@@ -242,7 +229,49 @@ public class Optionpane extends JPanel {
 						name=hnameField.getText();
 						info my =new info(ip, name,Integer.valueOf(port));
 						//info peer =new info("192.168.1.17", "arpit", 1478);//"saurabh",4534);
-						new network().start(my,null);
+						network =new network();
+						network.start(my,null);			 
+						
+						Thread td = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								int maxPlayers= Integer.valueOf(maxPlayerField.getText());
+								boolean running =true;
+								while(running){
+									System.out.println(network.peermanage.no_of_peers());
+									playerJoinedField.setText(""+network.peermanage.no_of_peers());
+									if(network.peermanage.no_of_peers()<maxPlayers){
+										network.peermanage.sendtoall("joined "+network.peermanage.no_of_peers()+" "+maxPlayers);
+										//network.peermanage.sendtoall("max "+network.peermanage.no_of_peers());
+									}
+									if(network.peermanage.no_of_peers()==maxPlayers-1){
+										running =false;
+										//Thread.sleep(1000);
+										try {
+											Thread.sleep(1000);
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										//int max=Integer.valueOf(maxPlayers);
+										//int peers=Integer.valueOf(lines[2]);
+										network.peermanage.sendtoall("start "+network.peermanage.no_of_peers()+" "+maxPlayers);
+										PlayGame ex = new PlayGame(maxPlayers,network.peermanage.no_of_peers());
+										ex.setVisible(true);
+									}
+									
+									
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+						});
+						td.start();
+						
 					} catch (UnknownHostException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -262,7 +291,33 @@ public class Optionpane extends JPanel {
 						name=nameField.getText();
 						info my =new info(hostip,hostname, Integer.valueOf(hostport));
 						info peer =new info(ip, name,Integer.valueOf(port));
-						new network().start(peer,my);
+						network =new network();
+						network.start(peer,my);
+						Thread td = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								boolean running =true;
+								while(running){
+									System.out.println(network.peermanage.no_of_peers());
+									int maxPlayers=Integer.valueOf(maxPlayerField.getText());
+									if(network.peermanage.no_of_peers()==maxPlayers-1){
+										running =false;
+
+//										PlayGame ex = new PlayGame(2,0);
+//										ex.setVisible(true);
+									}
+									
+									//network.peermanage.listofpeers.get(0).read.readLine();
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+						});
+						td.start();
 					} catch (UnknownHostException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -286,7 +341,8 @@ public class Optionpane extends JPanel {
 		// buttonPane.add(disconnectButton);
 		add(buttonPane);
 	}
-
+//	int counter = 0;
+//    Timer timer;
 }
 
 class ActionAdapter implements ActionListener {

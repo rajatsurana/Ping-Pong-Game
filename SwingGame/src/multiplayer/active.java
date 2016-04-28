@@ -1,4 +1,8 @@
 package multiplayer;
+import game.CustomBoard;
+import game.Optionpane;
+import game.PlayGame;
+
 import java.io.*;
 
 import org.w3c.dom.stylesheets.DocumentStyle;
@@ -20,9 +24,9 @@ public class active extends Thread{
     public info my;
     activepeer activepeer;
     newpeer newpeer;
-    info peer;
-    info mydata;
-    read read;
+    public static info peer;
+    public static info mydata;
+    public read read;
     write write;
 
     public active(info my,
@@ -51,13 +55,43 @@ public class active extends Thread{
 
         for ( String line ; null != (line = read.readLine()) ; ){
         	//activepeer.sendtoall(line);
-        	if(line.startsWith("helo")){System.out.println(line);updateinfo(line);}
-        	if(line.startsWith("dosti"))processpeer(line);
-        	else System.out.println(line);
+        	process(line);
+        	
+        	
         	}                 
         activepeer.remove( this );
        // zUserDialog.showDisconnect( zPeerInfo );
     }
+   public void process(String  line){
+	   if(line.startsWith("joined")){
+		   String[] lines =line.split(" ");
+		   Optionpane.playerJoinedField.setText(lines[1]);
+		   Optionpane.maxPlayerField.setText(lines[2]);
+	   }else if(line.startsWith("start")){
+		   String[] lines =line.split(" ");
+		   int max=Integer.valueOf(lines[1]);
+		   int peers=Integer.valueOf(lines[2]);
+		   PlayGame ex = new PlayGame(max,peers);
+		   ex.setVisible(true);
+	   }else if(line.startsWith("p1")){
+		   String[] lines =line.split(" ");
+		   int x=Integer.valueOf(lines[1]);
+		   CustomBoard.paddle2.setX(x);
+	   }else if(line.startsWith("ball")){
+		   String[] lines =line.split(" ");
+		   int x=Integer.valueOf(lines[1]);
+		   int y=Integer.valueOf(lines[2]);
+		   int vx=Integer.valueOf(lines[3]);
+		   int vy=Integer.valueOf(lines[4]);
+		   CustomBoard.ball.setXY(x,y);
+		   //CustomBoard.ball.setVel(vx, vy);
+	   }
+	   else if(line.startsWith("helo")){System.out.println(line);updateinfo(line);}
+	   else if(line.startsWith("dosti"))processpeer(line);
+   		else {System.out.println(line);
+   		}
+	   
+   }
    public void send( String m )
     {
         write.writeLine(m);

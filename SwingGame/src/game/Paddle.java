@@ -1,11 +1,12 @@
 package game;
 
 import java.awt.Image;
-
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+
+import multiplayer.network;
 
 public class Paddle {
 
@@ -15,24 +16,41 @@ public class Paddle {
     private int x;
     private int y;
     private int lives;
-public Paddle() {
+    private String name;
+public Paddle(String name2) {
         
-        initPaddle();
+        initPaddle(name2);
     }
     
-    private void initPaddle() {
+  
+
+	private void initPaddle(String name2) {
         
         
         x = 150;
-        y = 260;
-        lives = 3;
+        y = 360;
+        lives = 100;
+        this.name=name2;
     }
 
 
-    public void move() {
+    public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public void move() {
     	
     		if(dx != 0){
     			x += dx;
+    			
     		}
     	
         
@@ -51,6 +69,13 @@ public Paddle() {
 
     public int getY() {
         return y;
+    }
+    public void setX(int x) {
+        this.x=x;
+    }
+
+    public void setY(int y) {
+    	this.y= y;
     }
 
     

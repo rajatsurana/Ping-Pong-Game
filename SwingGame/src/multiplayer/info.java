@@ -1,7 +1,8 @@
 package multiplayer;
 
 public class info {
-	String add,name;
+	String add;
+	public static String name;
 	Integer port=null;
 	public info(String add,String name,Integer port){
 		this.add=add;

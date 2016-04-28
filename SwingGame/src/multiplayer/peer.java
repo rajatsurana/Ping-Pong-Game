@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
+
 public class peer implements active.activepeer,pendingpeer.activepeersupport{
 	info my;
     pendingpeer pendingpeer;
-    List<active> listofpeers = new ArrayList<active>();
+    public List<active> listofpeers = new ArrayList<active>();
     int count = 0;
 
     public peer(info my,pendingpeer pendingpeer){
@@ -21,6 +23,9 @@ public class peer implements active.activepeer,pendingpeer.activepeersupport{
     public synchronized void remove( active a )
     {
         listofpeers.remove(a);
+    }
+    public synchronized int no_of_peers(){
+    	return listofpeers.size();
     }
 
     public synchronized info[] dost()

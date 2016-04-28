@@ -26,11 +26,7 @@ public class Ball {
 	    }
 
 	    public void move() {
-	        
-	        
-	        
-	        
-	            
+	       
 	        x += vx;
 	        y += vy;
 	    }
@@ -54,5 +50,9 @@ public class Ball {
 	    public void setVel(int velx, int vely){
 	    	vx = velx;
 	    	vy = vely;
+	    }
+	    public void setXY(int xx, int yy){
+	    	x = xx;
+	    	y = yy;
 	    }
 }

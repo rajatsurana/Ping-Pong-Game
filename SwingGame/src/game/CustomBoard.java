@@ -15,32 +15,37 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Board extends JPanel implements ActionListener {
+import multiplayer.active;
+import multiplayer.network;
+
+public class CustomBoard extends JPanel implements ActionListener {
 
 	private Timer timer;
-	private Paddle paddle;
-	private Com com;
-	private Ball ball;
+	public static Paddle paddle;
+	public static Paddle paddle2;
+	//private Com com;
+	public static Ball ball;
 	private String winner;
 	private boolean ingame;
 	private final int DELAY = 10;
 	private final int BOARD_WIDTH = 373;
-	private final int BOARD_HEIGHT = 245;
+	private final int BOARD_HEIGHT = 345;
 
-	public Board() {
+	public CustomBoard(int max ,int peers) {
 
-		initBoard();
+		initBoard(max,peers);
 	}
 
-	private void initBoard() {
+	private void initBoard(int max ,int peers) {
 
 		addKeyListener(new TAdapter());
 
 		setFocusable(true);
 		setBackground(Color.BLACK);
 
-		paddle = new Paddle("");
-		com = new Com();
+		paddle = new Paddle(active.mydata.name);
+		paddle2 = new Paddle(network.peermanage.listofpeers.get(0).peer.name);
+//		com = new Com();
 		ball = new Ball();
 		ingame = true;
 		timer = new Timer(DELAY, this);
@@ -66,11 +71,14 @@ public class Board extends JPanel implements ActionListener {
 		g.setColor(Color.RED);
 		g.fillRect(paddle.getX(), paddle.getY(), 150, 10);
 		g.setColor(Color.RED);
-		g.fillRect(com.getX(), com.getY(), 150, 10);
+		//g.fillRect(com.getX(), com.getY(), 150, 10);
+		
+		paddle2.setY(0);
+		g.fillRect(paddle2.getX(), paddle2.getY(), 150, 10);
 		g.setColor(Color.blue);
 		g.fillOval(ball.getX(), ball.getY(), 25, 25);
-		g.drawString("Lives: " + paddle.getLives(), 5, 245);
-		g.drawString("Lives: " + com.getLives(), 5, 15);
+		g.drawString("Lives: " + paddle.getLives(), 5, 345);
+		g.drawString("Lives: " + paddle2.getLives(), 5, 15);
 
 	}
 
@@ -78,21 +86,24 @@ public class Board extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		inGame();
 		paddle.move();
-		updatecom();
+		network.peermanage.sendtoall("p1 "+paddle.getX());
+		paddle2.move();
+		//updatecom();
 		checkCollisions();
 		ball.move();
+		network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+ball.getVX()+" "+ball.getVY());
 		checkGame();
 		repaint();
 	}
 
 	private void checkGame() {
-		if (com.getLives() == 0) {
-			winner = "Player";
+		if (paddle2.getLives() == 0) {
+			winner = "Player2";
 			ingame = false;
 
 		}
 		if (paddle.getLives() == 0) {
-			winner = "Computer";
+			winner = "Player1";
 			ingame = false;
 			
 		}
@@ -106,15 +117,15 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updatecom() {
-		if (ball.getVX() > 0) {
-			if (ball.getX() + 25 > com.getX() + 75)
-				com.moveRight();
-		} else {
-			if (ball.getX() + 25 < com.getX() + 75)
-				com.moveLeft();
-		}
-	}
+//	private void updatecom() {
+//		if (ball.getVX() > 0) {
+//			if (ball.getX() + 25 > com.getX() + 75)
+//				com.moveRight();
+//		} else {
+//			if (ball.getX() + 25 < com.getX() + 75)
+//				com.moveLeft();
+//		}
+//	}
 
 	private void drawGameOver(Graphics g) {
 
@@ -134,30 +145,33 @@ public class Board extends JPanel implements ActionListener {
 
 		Rectangle r3 = paddle.getBounds();
 		Rectangle r2 = ball.getBounds();
-		Rectangle r1 = com.getBounds();
+		Rectangle r1 = paddle2.getBounds();
 		if (r2.intersects(r3)) {
 			int velX = ball.getVX();
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
+			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+velX+" "+temp);
 		}
 		if (r2.intersects(r1)) {
 			int velX = ball.getVX();
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
+			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+velX+" "+temp);
 		}
 		if (ball.getX() > BOARD_WIDTH || ball.getX() < 0) {
 			int temp = -1 * ball.getVX();
 
 			ball.setVel(temp, ball.getVY());
-
+			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+temp+" "+ball.getVY());
 		}
 		if (ball.getY() > BOARD_HEIGHT || ball.getY() < 0) {
 			int temp = -1 * ball.getVY();
 			ball.setVel(ball.getVX(), temp);
+			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+ball.getVX()+" "+temp);
 			if (ball.getY() < 0) {
-				com.reduLives();
+				paddle2.reduLives();
 			}
 			if (ball.getY() > BOARD_HEIGHT) {
 				paddle.reduLives();
@@ -169,12 +183,24 @@ public class Board extends JPanel implements ActionListener {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			paddle.keyReleased(e);
+			if(active.mydata.name.equals(paddle.getName())){
+				paddle.keyReleased(e);
+			}else{
+				paddle2.keyReleased(e);
+			}
+			
+			
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			paddle.keyPressed(e);
+			
+			
+			if(active.mydata.name.equals(paddle.getName())){
+				paddle.keyPressed(e);
+			}else{
+				paddle2.keyPressed(e);
+			}
 		}
 	}
 }
