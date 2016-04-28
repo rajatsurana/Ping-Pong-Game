@@ -63,6 +63,30 @@ public class active extends Thread{
        // zUserDialog.showDisconnect( zPeerInfo );
     }
    public void process(String  line){
+	   if(line.startsWith("p1")){
+		   String[] lines =line.split(" ");
+		   int x=Integer.valueOf(lines[1]);
+		   CustomBoard.paddle2.setX(x);
+	   }
+	   if(line.startsWith("BVel")){
+		   String[] lines =line.split(" ");
+		   if(!lines[1].equals("") && !lines[2].equals("")){
+			   int vx=Integer.valueOf(lines[1]);
+			   int vy=Integer.valueOf(lines[2]);
+			   CustomBoard.ball.setVel(vx, vy);
+		   }
+		   
+		   
+		   
+	   }
+	   if(line.startsWith("BXY")){
+		   String[] lines =line.split(" ");
+		 if(!lines[1].equals("") && !lines[2].equals("")){
+		   int x=Integer.valueOf(lines[1]);
+		   int y=Integer.valueOf(lines[2]);
+		   CustomBoard.ball.setXY(x,y);
+		 }
+	   }
 	   if(line.startsWith("joined")){
 		   String[] lines =line.split(" ");
 		   Optionpane.playerJoinedField.setText(lines[1]);
@@ -73,19 +97,8 @@ public class active extends Thread{
 		   int peers=Integer.valueOf(lines[2]);
 		   PlayGame ex = new PlayGame(max,peers);
 		   ex.setVisible(true);
-	   }else if(line.startsWith("p1")){
-		   String[] lines =line.split(" ");
-		   int x=Integer.valueOf(lines[1]);
-		   CustomBoard.paddle2.setX(x);
-	   }else if(line.startsWith("ball")){
-		   String[] lines =line.split(" ");
-		   int x=Integer.valueOf(lines[1]);
-		   int y=Integer.valueOf(lines[2]);
-		   int vx=Integer.valueOf(lines[3]);
-		   int vy=Integer.valueOf(lines[4]);
-		   CustomBoard.ball.setXY(x,y);
-		   //CustomBoard.ball.setVel(vx, vy);
-	   }
+	   } 
+	   
 	   else if(line.startsWith("helo")){System.out.println(line);updateinfo(line);}
 	   else if(line.startsWith("dosti"))processpeer(line);
    		else {System.out.println(line);

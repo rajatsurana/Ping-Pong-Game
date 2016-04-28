@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +29,8 @@ public class CustomBoard extends JPanel implements ActionListener {
 	private String winner;
 	private boolean ingame;
 	private final int DELAY = 10;
-	private final int BOARD_WIDTH = 373;
-	private final int BOARD_HEIGHT = 345;
+	private final int BOARD_WIDTH = 400;
+	private final int BOARD_HEIGHT = 400;
 
 	public CustomBoard(int max ,int peers) {
 
@@ -81,17 +82,31 @@ public class CustomBoard extends JPanel implements ActionListener {
 		g.drawString("Lives: " + paddle2.getLives(), 5, 15);
 
 	}
-
+int counter=0;
+int counters=0;
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		inGame();
 		paddle.move();
-		network.peermanage.sendtoall("p1 "+paddle.getX());
+		
+		
 		paddle2.move();
 		//updatecom();
 		checkCollisions();
 		ball.move();
-		network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+ball.getVX()+" "+ball.getVY());
+		if (counters ==3){
+			network.peermanage.sendtoall("p1 "+paddle.getX());
+			counters=0;
+		}else if(counters<3){
+			counters++;
+		}
+		if(counter==50){
+			network.peermanage.sendtoall("BXY "+ball.getX()+" "+ball.getY());
+			counter=0;
+		}else if(counter<50){
+			counter++;
+		}
+		
 		checkGame();
 		repaint();
 	}
@@ -151,25 +166,25 @@ public class CustomBoard extends JPanel implements ActionListener {
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
-			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+velX+" "+temp);
+			network.peermanage.sendtoall("BVel "+" "+velX+" "+temp);
 		}
 		if (r2.intersects(r1)) {
 			int velX = ball.getVX();
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
-			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+velX+" "+temp);
+			network.peermanage.sendtoall("BVel "+velX+" "+temp);
 		}
-		if (ball.getX() > BOARD_WIDTH || ball.getX() < 0) {
+		if (ball.getX() > BOARD_WIDTH-ball.getBounds().getWidth() || ball.getX() < 0) {
 			int temp = -1 * ball.getVX();
 
 			ball.setVel(temp, ball.getVY());
-			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+temp+" "+ball.getVY());
+			network.peermanage.sendtoall("BVel "+temp+" "+ball.getVY());
 		}
-		if (ball.getY() > BOARD_HEIGHT || ball.getY() < 0) {
+		if (ball.getY() > BOARD_HEIGHT-2*ball.getBounds().getHeight() || ball.getY() < 0) {
 			int temp = -1 * ball.getVY();
 			ball.setVel(ball.getVX(), temp);
-			//network.peermanage.sendtoall("ball "+ball.getX()+" "+ball.getY()+" "+ball.getVX()+" "+temp);
+			network.peermanage.sendtoall("BVel "+ball.getVX()+" "+temp);
 			if (ball.getY() < 0) {
 				paddle2.reduLives();
 			}
