@@ -4,10 +4,11 @@ import java.awt.Rectangle;
 
 public class Ball {
 	
-	 
-	 private final int BALL_SPEED = 2;
-	 private int vx;
-	 private int vy;
+	 private final int BOARD_WIDTH = 365;
+	 private final int BOARD_HEIGHT = 345;
+	 private final double BALL_SPEED = 3.0;
+	 private double vx;
+	 private double vy;
 	 private int x;
 	 private int y;
 
@@ -21,15 +22,21 @@ public class Ball {
 	        
 	        vx = BALL_SPEED;
 	        vy = BALL_SPEED;
-	        x = 00;
-	        y = 00;
+	        x = 40;
+	        y = 60;
 	    }
 
 	    public void move() {
 	        
 	        
 	        
-	        
+	        if (x > BOARD_WIDTH || x < 0){
+	        	vx = -vx;
+	        	
+	        }
+	        if(y > BOARD_HEIGHT || y < 0){
+	        	vy = -vy;
+	        }
 	            
 	        x += vx;
 	        y += vy;
@@ -41,17 +48,17 @@ public class Ball {
 	    public int getY() {
 	        return y;
 	    }
-	    public int getVX() {
+	    public double getVX() {
 	        return vx;
 	    }
 
-	    public int getVY() {
+	    public double getVY() {
 	        return vy;
 	    }
 	    public Rectangle getBounds() {
 	        return new Rectangle(x, y, 25, 25);
 	    }
-	    public void setVel(int velx, int vely){
+	    public void setVel(double velx, double vely){
 	    	vx = velx;
 	    	vy = vely;
 	    }
