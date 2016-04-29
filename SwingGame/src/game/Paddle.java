@@ -34,7 +34,37 @@ public Paddle(String name2) {
     }
 
 
-    public String getName() {
+    public int getDx() {
+		return dx;
+	}
+
+
+
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
+
+
+
+	public int getDy() {
+		return dy;
+	}
+
+
+
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+
+
+
+	public String getName() {
 		return name;
 	}
 
@@ -79,7 +109,25 @@ public Paddle(String name2) {
     }
 
     
+public void keyPressed2(KeyEvent e){
+	int key = e.getKeyCode();
+	if (key == KeyEvent.VK_A) {
+    	if(x > 40){
+    		dx = -1;
+    	}else{
+    		dx = 0;
+    	}
+    	
+    }
 
+    if (key == KeyEvent.VK_D) {
+    	if(x < 200){
+    		dx = 1;
+    	}else{
+    		dx = 0;
+    	}
+    }
+}
     public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
@@ -100,7 +148,7 @@ public Paddle(String name2) {
         		dx = 0;
         	}
         }
-
+        
         if (key == KeyEvent.VK_UP) {
             dy = 0;
         }
@@ -115,11 +163,11 @@ public Paddle(String name2) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-            dx = 0;
+            //dx = 0;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            dx = 0;
+            //dx = 0;
         }
 
         if (key == KeyEvent.VK_UP) {

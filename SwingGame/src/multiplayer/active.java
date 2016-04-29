@@ -6,7 +6,7 @@ import game.PlayGame;
 import java.io.*;
 
 import org.w3c.dom.stylesheets.DocumentStyle;
-public class active extends Thread{
+public class active extends Thread implements CustomBoard.func {
     public interface activepeer
     {
         void remove( active a );
@@ -24,10 +24,11 @@ public class active extends Thread{
     public info my;
     activepeer activepeer;
     newpeer newpeer;
-    public static info peer;
-    public static info mydata;
+    public  info peer;
+    public info mydata;
     public read read;
     write write;
+    
 
     public active(info my,
                        activepeer activepeer ,
@@ -57,37 +58,13 @@ public class active extends Thread{
         	//activepeer.sendtoall(line);
         	process(line);
         	
-        	
-        	}                 
+        }                 
         activepeer.remove( this );
        // zUserDialog.showDisconnect( zPeerInfo );
     }
    public void process(String  line){
-	   if(line.startsWith("p1")){
-		   String[] lines =line.split(" ");
-		   int x=Integer.valueOf(lines[1]);
-		   CustomBoard.paddle2.setX(x);
-	   }
-	   if(line.startsWith("BVel")){
-		   String[] lines =line.split(" ");
-		   if(!lines[1].equals("") && !lines[2].equals("")){
-			   int vx=Integer.valueOf(lines[1]);
-			   int vy=Integer.valueOf(lines[2]);
-			   CustomBoard.ball.setVel(vx, vy);
-		   }
-		   
-		   
-		   
-	   }
-	   if(line.startsWith("BXY")){
-		   String[] lines =line.split(" ");
-		 if(!lines[1].equals("") && !lines[2].equals("")){
-		   int x=Integer.valueOf(lines[1]);
-		   int y=Integer.valueOf(lines[2]);
-		   CustomBoard.ball.setXY(x,y);
-		 }
-	   }
-	   if(line.startsWith("joined")){
+	   	chutiyapa(line);
+	      if(line.startsWith("joined")){
 		   String[] lines =line.split(" ");
 		   Optionpane.playerJoinedField.setText(lines[1]);
 		   Optionpane.maxPlayerField.setText(lines[2]);
@@ -95,7 +72,7 @@ public class active extends Thread{
 		   String[] lines =line.split(" ");
 		   int max=Integer.valueOf(lines[1]);
 		   int peers=Integer.valueOf(lines[2]);
-		   PlayGame ex = new PlayGame(max,peers);
+		   PlayGame ex = new PlayGame(max,peers,"DOWN");
 		   ex.setVisible(true);
 	   } 
 	   
@@ -104,6 +81,57 @@ public class active extends Thread{
    		else {System.out.println(line);
    		}
 	   
+   }
+   public void chutiyapa(String line){
+	   if(line.startsWith("Left")||line.startsWith("Right")){
+		   String[] lines =line.split(" ");
+		   if(!lines[1].equals("") && !lines[2].equals("")){
+			   int x=Integer.valueOf(lines[1]);
+			   int dx =Integer.valueOf(lines[2]);
+			   String name =lines[3];
+			   System.out.println(name+" "+CustomBoard.paddle.getName()+" "+CustomBoard.paddle2.getName());
+			   if(CustomBoard.paddle.getName().equals(name)){
+				   CustomBoard.paddle.setX(x);
+				   CustomBoard.paddle.setDx(dx);
+				   
+			   }else if(CustomBoard.paddle2.getName().equals(name)){
+				   
+				   CustomBoard.paddle2.setX(x);//(400-x-150);
+				   CustomBoard.paddle2.setDx(dx);//(-dx);
+			   }
+			   
+		   }
+		   
+	   }else
+	   if(line.startsWith("L2")||line.startsWith("R2")){
+		   String[] lines =line.split(" ");
+		   if(!lines[1].equals("") && !lines[2].equals("")){
+			   int x=Integer.valueOf(lines[1]);
+			   int dx =Integer.valueOf(lines[2]);
+			   CustomBoard.paddle.setX(400-x-150);
+			   CustomBoard.paddle.setDx(-dx);
+			   
+		   }
+		   
+	   }
+	   if(line.startsWith("BVel")){
+		   String[] lines =line.split(" ");
+		   if(!lines[1].equals("") && !lines[2].equals("")){
+			   int vx=Integer.valueOf(lines[1]);
+			   int vy=Integer.valueOf(lines[2]);
+			   //CustomBoard.ball.setVel(-vx, -vy);
+		   }
+		  		   
+	   }
+	   if(line.startsWith("BXY")){
+		   String[] lines =line.split(" ");
+		 if(!lines[1].equals("") && !lines[2].equals("")){
+		   int x=Integer.valueOf(lines[1]);
+		   int y=Integer.valueOf(lines[2]);
+		   //CustomBoard.ball.setXY(400-x-25,400-y-25);
+		 }
+	   }
+	
    }
    public void send( String m )
     {

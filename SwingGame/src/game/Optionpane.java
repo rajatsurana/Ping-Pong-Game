@@ -227,7 +227,13 @@ public class Optionpane extends JPanel {
 						ip=Inet4Address.getLocalHost().getHostAddress();
 						port=hportField.getText();
 						name=hnameField.getText();
-						info my =new info(ip, name,Integer.valueOf(port));
+						///
+						port="1234";
+						name="rajat";
+						ip="192.168.1.17";
+						maxPlayerField.setText("2");
+						///
+						info my =new info(ip, "rajat",Integer.valueOf(port));
 						//info peer =new info("192.168.1.17", "arpit", 1478);//"saurabh",4534);
 						network =new network();
 						network.start(my,null);			 
@@ -256,7 +262,7 @@ public class Optionpane extends JPanel {
 										//int max=Integer.valueOf(maxPlayers);
 										//int peers=Integer.valueOf(lines[2]);
 										network.peermanage.sendtoall("start "+network.peermanage.no_of_peers()+" "+maxPlayers);
-										PlayGame ex = new PlayGame(maxPlayers,network.peermanage.no_of_peers());
+										PlayGame ex = new PlayGame(maxPlayers,network.peermanage.no_of_peers(),"UP");
 										ex.setVisible(true);
 									}
 									
@@ -289,6 +295,14 @@ public class Optionpane extends JPanel {
 						hostip=ipField.getText();
 						port=portField.getText();
 						name=nameField.getText();
+						///
+						port="1235";
+						name="raja";
+						hostport="1234";
+						hostname="rajat";
+						hostip="192.168.1.17";
+						///
+						
 						info my =new info(hostip,hostname, Integer.valueOf(hostport));
 						info peer =new info(ip, name,Integer.valueOf(port));
 						network =new network();

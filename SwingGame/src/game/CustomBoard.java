@@ -6,7 +6,6 @@ import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +17,14 @@ import javax.swing.Timer;
 
 import multiplayer.active;
 import multiplayer.network;
+import multiplayer.peer;
 
 public class CustomBoard extends JPanel implements ActionListener {
+
+	public interface func {
+		void chutiyapa(String s);
+
+	}
 
 	private Timer timer;
 	public static Paddle paddle;
@@ -31,10 +36,12 @@ public class CustomBoard extends JPanel implements ActionListener {
 	private final int DELAY = 10;
 	private final int BOARD_WIDTH = 400;
 	private final int BOARD_HEIGHT = 400;
-
-	public CustomBoard(int max ,int peers) {
-
+	active activ;
+	String position;
+	public CustomBoard(int max ,int peers,active act,String pos) {
+this.position=pos;
 		initBoard(max,peers);
+		activ=act;
 	}
 
 	private void initBoard(int max ,int peers) {
@@ -43,9 +50,9 @@ public class CustomBoard extends JPanel implements ActionListener {
 
 		setFocusable(true);
 		setBackground(Color.BLACK);
-
-		paddle = new Paddle(active.mydata.name);
-		paddle2 = new Paddle(network.peermanage.listofpeers.get(0).peer.name);
+		
+		paddle = new Paddle(peer.my.name);
+		paddle2 = new Paddle(network.peermanage.listofpeers.get(0).mydata.name);
 //		com = new Com();
 		ball = new Ball();
 		ingame = true;
@@ -68,13 +75,19 @@ public class CustomBoard extends JPanel implements ActionListener {
 
 		// Graphics2D g2d = (Graphics2D) g;
 		// g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
-
+		if(position.equals("DOWN")){
+			paddle.setY(0);
+			paddle2.setY(230);
+		}else{
+			paddle.setY(230);
+			paddle2.setY(0);
+		}
 		g.setColor(Color.RED);
 		g.fillRect(paddle.getX(), paddle.getY(), 150, 10);
 		g.setColor(Color.RED);
 		//g.fillRect(com.getX(), com.getY(), 150, 10);
 		
-		paddle2.setY(0);
+		
 		g.fillRect(paddle2.getX(), paddle2.getY(), 150, 10);
 		g.setColor(Color.blue);
 		g.fillOval(ball.getX(), ball.getY(), 25, 25);
@@ -94,16 +107,17 @@ int counters=0;
 		//updatecom();
 		checkCollisions();
 		ball.move();
-		if (counters ==3){
-			network.peermanage.sendtoall("p1 "+paddle.getX());
+		if (counters ==10){
+			//network.peermanage.sendtoall("p1 "+paddle.getX()+" "+paddle.getDx());
 			counters=0;
-		}else if(counters<3){
+		}else if(counters<10){
 			counters++;
 		}
-		if(counter==50){
-			network.peermanage.sendtoall("BXY "+ball.getX()+" "+ball.getY());
+		if(counter==12){
+			//network.peermanage.sendtoall("BXY "+ball.getX()+" "+ball.getY());
+			//network.peermanage.sendtoall("BVel "+ball.getVX()+" "+ball.getVY());
 			counter=0;
-		}else if(counter<50){
+		}else if(counter<12){
 			counter++;
 		}
 		
@@ -166,25 +180,25 @@ int counters=0;
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
-			network.peermanage.sendtoall("BVel "+" "+velX+" "+temp);
+			//network.peermanage.sendtoall("BVel "+" "+velX+" "+temp);
 		}
 		if (r2.intersects(r1)) {
 			int velX = ball.getVX();
 			int velY = ball.getVY();
 			int temp = -velY;
 			ball.setVel(velX, temp);
-			network.peermanage.sendtoall("BVel "+velX+" "+temp);
+			//network.peermanage.sendtoall("BVel "+velX+" "+temp);
 		}
 		if (ball.getX() > BOARD_WIDTH-ball.getBounds().getWidth() || ball.getX() < 0) {
 			int temp = -1 * ball.getVX();
 
 			ball.setVel(temp, ball.getVY());
-			network.peermanage.sendtoall("BVel "+temp+" "+ball.getVY());
+			//network.peermanage.sendtoall("BVel "+temp+" "+ball.getVY());
 		}
 		if (ball.getY() > BOARD_HEIGHT-2*ball.getBounds().getHeight() || ball.getY() < 0) {
 			int temp = -1 * ball.getVY();
 			ball.setVel(ball.getVX(), temp);
-			network.peermanage.sendtoall("BVel "+ball.getVX()+" "+temp);
+			//network.peermanage.sendtoall("BVel "+ball.getVX()+" "+temp);
 			if (ball.getY() < 0) {
 				paddle2.reduLives();
 			}
@@ -198,11 +212,12 @@ int counters=0;
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if(active.mydata.name.equals(paddle.getName())){
+			//if(active.mydata.name.equals(paddle.getName())){
 				paddle.keyReleased(e);
-			}else{
-				paddle2.keyReleased(e);
-			}
+				
+//			}else{
+//				paddle2.keyReleased(e);
+//			}
 			
 			
 		}
@@ -211,11 +226,27 @@ int counters=0;
 		public void keyPressed(KeyEvent e) {
 			
 			
-			if(active.mydata.name.equals(paddle.getName())){
+			if(position.equals("UP")||position.equals("DOWN")){
 				paddle.keyPressed(e);
-			}else{
-				paddle2.keyPressed(e);
+				if(e.getKeyCode()==KeyEvent.VK_LEFT){
+					network.peermanage.sendtoall("Left "+paddle.getX()+" "+paddle.getDx()+ " "+paddle.getName());
+				}else if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+					network.peermanage.sendtoall("Right "+paddle.getX()+" "+paddle.getDx()+ " "+paddle.getName());
+				}
 			}
+			if(position.equals("UP")||position.equals("DOWN")){
+				paddle.keyPressed2(e);
+				if(e.getKeyCode()==KeyEvent.VK_A){
+					network.peermanage.sendtoall("Left "+paddle.getX()+" "+paddle.getDx()+ " "+paddle.getName());
+				}else if(e.getKeyCode()==KeyEvent.VK_D){
+					network.peermanage.sendtoall("Right "+paddle.getX()+" "+paddle.getDx()+ " "+paddle.getName());//("R2 "+paddle2.getX()+" "+paddle2.getDx());
+				}
+			}
+//			paddle2.keyPressed2(e);
+//			
 		}
 	}
+public void sexy(String line){
+	
+}
 }

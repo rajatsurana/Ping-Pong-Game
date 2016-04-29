@@ -13,7 +13,7 @@ public class pendingpeer extends Thread implements active.newpeer{
 
         void addactivepeer(info peer, InputStream pInputStream , OutputStream pOutputStream );
     }
-	list peers=new list();
+	public list peers=new list();
 	private activepeersupport activepeer = null;
 	public void start(activepeersupport activepeer)
     {
@@ -41,17 +41,17 @@ public class pendingpeer extends Thread implements active.newpeer{
 	    }
 	    private void handleNewPeerClient(obj node)
 	    {
-	        info peer = node.info;
-	        System.out.println(peer.name+" "+peer.add+" "+peer.port);
-	        if (activepeer.isalreadyconnected(peer)){
-	        	System.out.println(peer.name+" "+peer.add+" "+peer.port);
+	        info peer2 = node.info;
+	        System.out.println(peer2.name+" "+peer2.add+" "+peer2.port);
+	        if (activepeer.isalreadyconnected(peer2)){
+	        	System.out.println(peer2.name+" "+peer2.add+" "+peer2.port);
 	        	System.out.println("is already connected");
 	            return;}
 
 	        Socket socket = node.soc;
 	        if ( socket == null )
 	        	try{
-	            if ( null == (socket = new Socket(peer.add,peer.port))){
+	            if ( null == (socket = new Socket(peer2.add,peer2.port))){
 	                System.out.println("connection failed");
 	                return;
 	            }}catch(IOException ignore){
@@ -78,7 +78,7 @@ public class pendingpeer extends Thread implements active.newpeer{
 	            }
 	            return;
 	        }
-	        activepeer.addactivepeer( peer, inputStream , outputStream );
+	        activepeer.addactivepeer( peer2, inputStream , outputStream );
 	        
 	        //connection true;
 	    }

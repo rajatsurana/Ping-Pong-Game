@@ -20,7 +20,8 @@ public class network extends Thread{
             
             System.out.println("started");
             start();
-            new chatinterface(peermanage);}
+            new chatinterface(peermanage);
+            }
 		catch ( Exception e )
         {
             e.printStackTrace();
