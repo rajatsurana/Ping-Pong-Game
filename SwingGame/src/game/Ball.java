@@ -82,7 +82,7 @@ public class Ball {
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 25, 25);
+		return new Rectangle(x, y, 8, 8);
 	}
 
 	public void setVel(int velx, int vely) {

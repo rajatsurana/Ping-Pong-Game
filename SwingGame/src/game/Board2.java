@@ -29,6 +29,7 @@ public class Board2 extends JPanel implements ActionListener {
 	private Paddleup paddleup;
 	// private Com com;
 	private Ball ball;
+	private int ball_width;
 	private String winner;
 	private Power power;
 	private boolean ingame;
@@ -80,6 +81,7 @@ public class Board2 extends JPanel implements ActionListener {
 		paddleup = new Paddleup();
 		// com = new Com();
 		ball = new Ball();
+		ball_width = 8;
 		ingame = true;
 		// pause = true;
 		power = new Power();
@@ -147,11 +149,11 @@ public class Board2 extends JPanel implements ActionListener {
 		 */
 		if (ball2_visi) {
 			g.setColor(Color.blue);
-			g.fillOval(ball2.getX(), ball2.getY(), 25, 25);
+			g.fillOval(ball2.getX(), ball2.getY(), ball_width, ball_width);
 		}
 
 		g.setColor(Color.blue);
-		g.fillOval(ball.getX(), ball.getY(), 25, 25);
+		g.fillOval(ball.getX(), ball.getY(), ball_width, ball_width);
 
 		drawLives(g);
 		drawPowers(g);
@@ -337,7 +339,7 @@ public class Board2 extends JPanel implements ActionListener {
 			if (paddleup.getLives() == 0) {
 
 				playercount--;
-				System.out.println("paddleup " + playercount);
+				//System.out.println("paddleup " + playercount);
 				paddleup.setNvis();
 				if (playercount == 1) {
 					ingame = false;
@@ -357,7 +359,7 @@ public class Board2 extends JPanel implements ActionListener {
 			if (paddle.getLives() == 0) {
 				playercount -= 1;
 				paddle.setNvis();
-				System.out.println("paddle " + playercount);
+				//System.out.println("paddle " + playercount);
 				if (playercount == 1) {
 					ingame = false;
 
@@ -376,7 +378,7 @@ public class Board2 extends JPanel implements ActionListener {
 			if (paddler.getLives() == 0) {
 				playercount -= 1;
 				paddler.setNvis();
-				System.out.println("paddler " + playercount);
+				//System.out.println("paddler " + playercount);
 				if (playercount == 1) {
 					ingame = false;
 
@@ -395,7 +397,7 @@ public class Board2 extends JPanel implements ActionListener {
 			if (paddlel.getLives() == 0) {
 				playercount -= 1;
 				paddlel.setNvis();
-				System.out.println("paddlel " + playercount);
+				//System.out.println("paddlel " + playercount);
 				if (playercount == 1) {
 					ingame = false;
 
@@ -489,7 +491,7 @@ public class Board2 extends JPanel implements ActionListener {
 			 * 
 			 * }
 			 */
-			if (ball2.getX() + 25 > BOARD_WIDTH_R
+			if (ball2.getX() + ball_width > BOARD_WIDTH_R
 					|| ball2.getX() < BOARD_WIDTH_L) {
 				int temp = -1 * ball2.getVX();
 
@@ -503,7 +505,7 @@ public class Board2 extends JPanel implements ActionListener {
 					}
 
 				}
-				if (ball2.getX() + 25 > BOARD_WIDTH_R) {
+				if (ball2.getX() + ball_width > BOARD_WIDTH_R) {
 
 					if (ball2.getY() < 525 && ball2.getY() > 125) {
 
@@ -515,7 +517,7 @@ public class Board2 extends JPanel implements ActionListener {
 				}
 
 			}
-			if (ball2.getY() + 25 > BOARD_HEIGHT_D
+			if (ball2.getY() + ball_width > BOARD_HEIGHT_D
 					|| ball2.getY() < BOARD_HEIGHT_U) {
 				int temp = -1 * ball2.getVY();
 				ball2.setVel(ball2.getVX(), temp);
@@ -528,7 +530,7 @@ public class Board2 extends JPanel implements ActionListener {
 					}
 
 				}
-				if (ball2.getY() + 25 > BOARD_HEIGHT_D) {
+				if (ball2.getY() + ball_width > BOARD_HEIGHT_D) {
 
 					if (ball2.getX() < 550 && ball2.getX() > 150) {
 
@@ -629,7 +631,7 @@ public class Board2 extends JPanel implements ActionListener {
 
 		}
 
-		if (ball.getX() + 25 > BOARD_WIDTH_R || ball.getX() < BOARD_WIDTH_L) {
+		if (ball.getX() + ball_width > BOARD_WIDTH_R || ball.getX() < BOARD_WIDTH_L) {
 			int temp = -1 * ball.getVX();
 
 			ball.setVel(temp, ball.getVY());
@@ -648,7 +650,7 @@ public class Board2 extends JPanel implements ActionListener {
 					}
 				}
 			}
-			if (ball.getX() + 25 > BOARD_WIDTH_R) {
+			if (ball.getX() + ball_width > BOARD_WIDTH_R) {
 
 				if (ball.getY() < 525 && ball.getY() > 125) {
 
@@ -666,7 +668,7 @@ public class Board2 extends JPanel implements ActionListener {
 			}
 
 		}
-		if (ball.getY() + 25 > BOARD_HEIGHT_D || ball.getY() < BOARD_HEIGHT_U) {
+		if (ball.getY() + ball_width > BOARD_HEIGHT_D || ball.getY() < BOARD_HEIGHT_U) {
 			int temp = -1 * ball.getVY();
 			ball.setVel(ball.getVX(), temp);
 
@@ -684,7 +686,7 @@ public class Board2 extends JPanel implements ActionListener {
 					}
 				}
 			}
-			if (ball.getY() + 25 > BOARD_HEIGHT_D) {
+			if (ball.getY() + ball_width > BOARD_HEIGHT_D) {
 
 				if (ball.getX() < 550 && ball.getX() > 150) {
 
@@ -761,7 +763,7 @@ public class Board2 extends JPanel implements ActionListener {
 							paddlerExtime = System.currentTimeMillis();
 						}
 					} else {
-						ball2 = new Ball(ball.getX() - 25, ball.getY());
+						ball2 = new Ball(ball.getX() - ball_width, ball.getY());
 						ball2.setVel(ball.getVX(), -ball.getVY());
 						ball2_visi = true;
 						ball.setVel(-ball.getVX(), ball.getVY());
