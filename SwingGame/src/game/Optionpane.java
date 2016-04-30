@@ -3,6 +3,8 @@ package game;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+import udp.client;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +15,10 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.TimerTask;
 
-import multiplayer.info;
-import multiplayer.network;
+
+
+//import multiplayer.info;
+import udp.network;
 
 public class Optionpane extends JPanel {
 	// Connect status constants
@@ -23,7 +27,7 @@ public class Optionpane extends JPanel {
 	public final static int DISCONNECTING = 2;
 	public final static int BEGIN_CONNECT = 3;
 	public final static int CONNECTED = 4;
-	public network network;
+	public network net;
 	// Other constants
 	public final static String statusMessages[] = {
 			" Error! Could not connect!", " Disconnected", " Disconnecting...",
@@ -233,10 +237,11 @@ public class Optionpane extends JPanel {
 						ip="192.168.1.17";
 						maxPlayerField.setText("2");
 						///
-						info my =new info(ip, "rajat",Integer.valueOf(port));
-						//info peer =new info("192.168.1.17", "arpit", 1478);//"saurabh",4534);
-						network =new network();
-						network.start(my,null);			 
+						net=new network("kapoor","237.0.0.1",1237,2);
+						//net.addclient(new client("kapoor",1237,"237.0.0.1",1234));
+//						info my =new info(ip, name,Integer.valueOf(port));
+//						network =new network();
+//						network.start(my,null);			 
 						
 						Thread td = new Thread(new Runnable() {
 							@Override
@@ -244,25 +249,26 @@ public class Optionpane extends JPanel {
 								int maxPlayers= Integer.valueOf(maxPlayerField.getText());
 								boolean running =true;
 								while(running){
-									System.out.println(network.peermanage.no_of_peers());
-									playerJoinedField.setText(""+network.peermanage.no_of_peers());
-									if(network.peermanage.no_of_peers()<maxPlayers){
-										network.peermanage.sendtoall("joined "+network.peermanage.no_of_peers()+" "+maxPlayers);
+									System.out.println(network.listofpeers.size());
+									playerJoinedField.setText(""+network.listofpeers.size());
+									if(net.listofpeers.size()<maxPlayers){
+										net.broadcast("joined "+net.listofpeers.size()+" "+maxPlayers);
 										//network.peermanage.sendtoall("max "+network.peermanage.no_of_peers());
 									}
-									if(network.peermanage.no_of_peers()==maxPlayers-1){
+									if(net.listofpeers.size()==maxPlayers-1){
 										running =false;
 										//Thread.sleep(1000);
+										net.broadcast("start "+ maxPlayers + " " + network.listofpeers.size());
 										try {
-											Thread.sleep(1000);
+											Thread.sleep(5000);
 										} catch (InterruptedException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
 										//int max=Integer.valueOf(maxPlayers);
 										//int peers=Integer.valueOf(lines[2]);
-										network.peermanage.sendtoall("start "+network.peermanage.no_of_peers()+" "+maxPlayers);
-										PlayGame ex = new PlayGame(maxPlayers,network.peermanage.no_of_peers(),"UP");
+										
+										PlayGame ex = new PlayGame(maxPlayers,network.listofpeers.size(),net,"UP");
 										ex.setVisible(true);
 									}
 									
@@ -300,28 +306,37 @@ public class Optionpane extends JPanel {
 						name="raja";
 						hostport="1234";
 						hostname="rajat";
-						hostip="192.168.1.17";
+						hostip="127.0.0.1";
 						///
-						
-						info my =new info(hostip,hostname, Integer.valueOf(hostport));
-						info peer =new info(ip, name,Integer.valueOf(port));
-						network =new network();
-						network.start(peer,my);
+						network net=new network("rajat","237.0.0.1",1234,2);
+						net.addclient(new client("rajat",1234,"237.0.0.1",1237));
+//						info my =new info(hostip,hostname, Integer.valueOf(hostport));
+//						info peer =new info(ip, name,Integer.valueOf(port));
+//						network =new network();
+//						network.start(peer,my);
 						Thread td = new Thread(new Runnable() {
 							@Override
 							public void run() {
 								boolean running =true;
 								while(running){
-									System.out.println(network.peermanage.no_of_peers());
+									System.out.println(network.listofpeers.size());
+									
 									int maxPlayers=Integer.valueOf(maxPlayerField.getText());
-									if(network.peermanage.no_of_peers()==maxPlayers-1){
+									if(net.listofpeers.size()==maxPlayers-1){
 										running =false;
-
+										try {
+											Thread.sleep(5000);
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										PlayGame ex = new PlayGame(maxPlayers,net.listofpeers.size(),net,"DOWN");
+										   ex.setVisible(true);
 //										PlayGame ex = new PlayGame(2,0);
 //										ex.setVisible(true);
 									}
 									
-									//network.peermanage.listofpeers.get(0).read.readLine();
+									
 									try {
 										Thread.sleep(1000);
 									} catch (InterruptedException e) {

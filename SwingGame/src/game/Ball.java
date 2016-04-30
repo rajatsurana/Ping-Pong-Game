@@ -1,58 +1,114 @@
-package game;
+package  game;
 
 import java.awt.Rectangle;
+import java.util.Random;
 
 public class Ball {
+
+	private final int BALL_SPEED = 3;
+	private int vx;
+	private int vy;
+	private int x;
+	private int y;
+
+	public Ball() {
+
+		initBall();
+	}
+	public Ball(int x1, int y1){
+		
+		x= x1;
+		y = y1;
+	}
+
+	private void initBall() {
+
+		int temp1 = randInt(0, 3);
+		int temp2 = randInt(0, 3);
+		if (temp1 < 2) {
+			vx = BALL_SPEED;
+		}else{
+			vx = -1*BALL_SPEED;
+		}
+		if (temp2 < 2) {
+			vy = BALL_SPEED+1;
+		}else{
+			vy = -1*BALL_SPEED-1;
+		}
+		
+//		vx=BALL_SPEED;
+//		vy=BALL_SPEED;
+		x = randInt(300, 400);
+
+		y = randInt(275, 375);
+	}
+
+	public static int randInt(int min, int max) {
+
+		// NOTE: This will (intentionally) not run as written so that folks
+		// copy-pasting have to think about how to initialize their
+		// Random instance. Initialization of the Random instance is outside
+		// the main scope of the question, but some decent options are to have
+		// a field that is initialized once and then re-used as needed or to
+		// use ThreadLocalRandom (if using at least Java 1.7).
+		Random rand = new Random();
+
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+
+		return randomNum;
+	}
+
+	public void move() {
+
+		x += vx;
+		y += vy;
+	}
 	
-	 
-	 private final int BALL_SPEED = 2;
-	 private int vx;
-	 private int vy;
-	 private int x;
-	 private int y;
 
-	    public Ball() {
-	        
+	public int getX() {
+		return x;
+	}
 
-	        initBall();
-	    }
-	    
-	    private void initBall() {
-	        
-	        vx = BALL_SPEED;
-	        vy = BALL_SPEED;
-	        x = 00;
-	        y = 00;
-	    }
+	public int getY() {
+		return y;
+	}
 
-	    public void move() {
-	       
-	        x += vx;
-	        y += vy;
-	    }
-	    public int getX() {
-	        return x;
-	    }
+	public int getVX() {
+		return vx;
+	}
 
-	    public int getY() {
-	        return y;
-	    }
-	    public int getVX() {
-	        return vx;
-	    }
+	public int getVY() {
+		return vy;
+	}
+	public void setXY(int x1,int y1){
+		x = x1;
+		 y = y1;
+	}
+	
+	public void setX(int x1) {
+	 x = x1;
+	}
 
-	    public int getVY() {
-	        return vy;
-	    }
-	    public Rectangle getBounds() {
-	        return new Rectangle(x, y, 25, 25);
-	    }
-	    public void setVel(int velx, int vely){
-	    	vx = velx;
-	    	vy = vely;
-	    }
-	    public void setXY(int xx, int yy){
-	    	x = xx;
-	    	y = yy;
-	    }
+	public void setY(int y1) {
+		 y = y1;
+	}
+
+	public void setVX(int x1) {
+		vx = x1;
+	}
+
+	public void setVY(int y1) {
+		vy = y1;
+	}
+	
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, 8, 8);
+	}
+
+	public void setVel(int velx, int vely) {
+		vx = velx;
+		vy = vely;
+	}
 }

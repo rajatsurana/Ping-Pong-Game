@@ -7,25 +7,25 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import multiplayer.network;
+import udp.network;
 
 public class PlayGame extends JFrame {
 	
 	
-public PlayGame(int max , int peers,String pos) {
+public PlayGame(int max , int peers,network net,String pos) {
         
-        initUI(max,peers,pos);
+        initUI(max,peers,net,pos);
     }
     
-    private void initUI(int max,int peers,String pos) {
+    private void initUI(int max,int peers,network net,String pos) {
         //if(max==2 && peers==1){
-        	add(new CustomBoard(max,peers,network.peermanage.listofpeers.get(0), pos));
+        	add(new CustomBoard(max,peers, net, pos));//network.peermanage.listofpeers.get(0),
 //        }else{
 //        	add(new Board());
 //        }
         
         
-        setSize(400, 400);
+        setSize(750, 700);
         setResizable(false);
         
         setTitle("PlayGame");

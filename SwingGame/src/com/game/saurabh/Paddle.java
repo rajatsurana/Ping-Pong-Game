@@ -67,7 +67,7 @@ public Paddle() {
         		dx = 0;
         	}
         }
-        
+
         if (key == KeyEvent.VK_UP) {
             dy = 0;
         }

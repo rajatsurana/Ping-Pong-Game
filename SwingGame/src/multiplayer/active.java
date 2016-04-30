@@ -6,7 +6,7 @@ import game.PlayGame;
 import java.io.*;
 
 import org.w3c.dom.stylesheets.DocumentStyle;
-public class active extends Thread implements CustomBoard.func {
+public class active extends Thread  {
     public interface activepeer
     {
         void remove( active a );
@@ -72,7 +72,7 @@ public class active extends Thread implements CustomBoard.func {
 		   String[] lines =line.split(" ");
 		   int max=Integer.valueOf(lines[1]);
 		   int peers=Integer.valueOf(lines[2]);
-		   PlayGame ex = new PlayGame(max,peers,"DOWN");
+		   PlayGame ex = new PlayGame(max,peers,null,"DOWN");
 		   ex.setVisible(true);
 	   } 
 	   
@@ -130,6 +130,21 @@ public class active extends Thread implements CustomBoard.func {
 		   int y=Integer.valueOf(lines[2]);
 		   //CustomBoard.ball.setXY(400-x-25,400-y-25);
 		 }
+	   }
+	   if(line.startsWith("Ballx")){
+		   String[] lines =line.split(" ");
+			 if(!lines[1].equals("") && !lines[2].equals("") && !lines[3].equals("") && !lines[4].equals("")){
+			   int x=Integer.valueOf(lines[1]);
+			   int y=Integer.valueOf(lines[2]);
+			   int z = Integer.valueOf(lines[3]);
+			   int w = Integer.valueOf(lines[4]);
+			   
+			   CustomBoard.ball.setX(x);
+			   CustomBoard.ball.setY(y);
+			   CustomBoard.ball.setVX(z);
+			   CustomBoard.ball.setVY(w);
+			   //CustomBoard.ball.setXY(400-x-25,400-y-25);
+			 }  
 	   }
 	
    }
