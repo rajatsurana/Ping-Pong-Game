@@ -235,13 +235,14 @@ public class Optionpane extends JPanel {
 //						port="1234";
 //						name="rajat";
 //						ip="192.168.1.17";
-//						maxPlayerField.setText("4");
+						maxPlayerField.setText("4");
 						port = portField.getText();
 						name = nameField.getText();
 						max = maxPlayerField.getText();
 						///
-						net=new network(name,"237.0.0.1",1237,Integer.valueOf(max));
-						//net.addclient(new client("kapoor",1237,"237.0.0.1",1234));
+						//net=new network(name,"237.0.0.1",1237,Integer.valueOf(max));
+						net=new network("kapoor-UP","237.0.0.1",1237,4);
+						
 //						info my =new info(ip, name,Integer.valueOf(port));
 //						network =new network();
 //						network.start(my,null);			 
@@ -311,16 +312,18 @@ public class Optionpane extends JPanel {
 //						hostname="rajat";
 //						hostip="127.0.0.1";
 						
-						port = portField.getText();
-						name = nameField.getText();
-						max = maxPlayerField.getText();
-						///
-						net=new network(name,"237.0.0.1",Integer.valueOf(port),Integer.valueOf(max));
-						net.addclient(new client(name,Integer.valueOf(port),"237.0.0.1",1237));
+//						port = portField.getText();
+//						name = nameField.getText();
+//						max = maxPlayerField.getText();
+//						///
+//						net=new network(name,"237.0.0.1",Integer.valueOf(port),Integer.valueOf(max));
+//						net.addclient(new client(name,Integer.valueOf(port),"237.0.0.1",1237));
 //						net=new network("jay-LEFT","237.0.0.1",1235,4);
 //						net.addclient(new client("jay-LEFT",1235,"237.0.0.1",1237));
 //						net=new network("jaya-DOWN","237.0.0.1",1236,4);
 //						net.addclient(new client("jaya-DOWN",1236,"237.0.0.1",1237));
+						net=new network("ja-RIGHT","237.0.0.1",1234,4);
+						net.addclient(new client("ja-RIGHT",1234,"237.0.0.1",1237));
 
 						Thread td = new Thread(new Runnable() {
 							@Override

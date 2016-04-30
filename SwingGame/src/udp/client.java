@@ -203,26 +203,26 @@ public class client extends Thread {
 		
 	}
 	
-	private void processCust2(String line) {
+	private synchronized void processCust2(String line) {
 		// TODO Auto-generated method stub
 		
 		if(line.startsWith("Left")||line.startsWith("Right")){
 			System.out.println(line.trim().length() +" :len");
 			   String[] lines =line.trim().split(" ");
-			   if(!lines[1].equals("") && !lines[2].equals("")){
+			   if(!lines[1].equals("") && !lines[2].equals("") && !lines[3].equals("")){
 				   int x=Integer.valueOf(lines[1]);
 				   int dx =Integer.valueOf(lines[2]);
 				   String name =lines[3];
-				   System.out.println(name+" "+CustomBoard2.paddle.getName()+" "+CustomBoard2.paddle2.getName());
-				   if(CustomBoard2.paddle.getName().equals(name)){
-					   CustomBoard2.paddle.setX(x);
-					   CustomBoard2.paddle.setDx(dx);
+				   System.out.println(name+" "+CustomBoard2.paddle4.getName()+" "+CustomBoard2.paddle5.getName());
+				   if(CustomBoard2.paddle4.getName().equals(name)){
+					   CustomBoard2.paddle4.setX(x);
+					   CustomBoard2.paddle4.setDx(dx);
 					   
 				   }
-				   else if(CustomBoard2.paddle2.getName().equals(name)){
+				   else if(CustomBoard2.paddle5.getName().equals(name)){
 					   
-					   CustomBoard2.paddle2.setX(x);//(400-x-150);
-					   CustomBoard2.paddle2.setDx(dx);//(-dx);
+					   CustomBoard2.paddle5.setX(x);//(400-x-150);
+					   CustomBoard2.paddle5.setDx(dx);//(-dx);
 				   }
 //				   else{
 //					   CustomBoard.paddle2.setX(x);//(400-x-150);
@@ -235,7 +235,7 @@ public class client extends Thread {
 		if(line.startsWith("UP")||line.startsWith("DOWN")){
 			   String[] lines =line.trim().split(" ");
 			   System.out.println(line.trim() +" :lenraj");
-			   if(!lines[1].equals("") && !lines[2].equals("")){
+			   if(!lines[1].equals("") && !lines[2].equals("") && !lines[3].equals("")){
 				   int y=Integer.valueOf(lines[1]);
 				   int dy =Integer.valueOf(lines[2]);
 				   String name =lines[3];
@@ -265,9 +265,9 @@ public class client extends Thread {
 				   int z = Integer.valueOf(lines[3]);
 				   int w = Integer.valueOf(lines[4]);
 				   System.out.println(x+":"+y+":"+z+":"+w);			   
-//					   CustomBoard2.ball.setX(x);
-//					   CustomBoard2.ball.setY(y);
-//					   CustomBoard2.ball.setVel(z,w);
+					   CustomBoard2.ball3.setX(x);
+					   CustomBoard2.ball3.setY(y);
+					   CustomBoard2.ball3.setVel(z,w);
 				   
 				   
 					  // CustomBoard.ball.setVY(w);

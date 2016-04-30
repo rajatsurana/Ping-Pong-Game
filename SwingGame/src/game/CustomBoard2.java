@@ -25,14 +25,14 @@ import com.game.saurabh.Power;
 public class CustomBoard2 extends JPanel implements ActionListener {
 
 	private Timer timer;
-	public static Paddle paddle;
+	public static Paddle paddle4;
 	public static Paddle paddle3;
 	public static Paddle paddle1;
 	private int playercount;
-	public static Paddle paddle2;
+	public static Paddle paddle5;
 	// private Com com;
-	public static Ball ball;
-	private int ball_width;
+	public static Ball ball3;
+	private int ball3_width;
 	private String winner;
 	private Power power;
 	private boolean ingame;
@@ -44,8 +44,8 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 	private long paddle3Extime;
 	private boolean paddle1Expand;
 	private long paddle1Extime;
-	private boolean paddle2Expand;
-	private long paddle2Extime;
+	private boolean paddle5Expand;
+	private long paddle5Extime;
 	String peer0pos;
 	String peer1pos;
 	String peer2pos;
@@ -72,7 +72,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 	// JButton button;
 	private Ball ball2;
 	private boolean ball2_visi;
-	private long balltimer;
+	private long ball3timer;
 	network net; 
 
 	public CustomBoard2() {
@@ -102,11 +102,12 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		peer2pos = network.listofpeers.get(2).connectedto();
 		peer2posi = peer2pos.split("-");
 		// myposition[1] init
+		System.out.print(myposition[1]+":"+peer0posi[1]+":"+peer1posi[1]+":"+peer2posi[1]);
 		if (myposition[1].equals("DOWN")) {
-			paddle = new Paddle(myposition[0]);
+			paddle4 = new Paddle(myposition[0]);
 
 		} else if (myposition[1].equals("UP")) {
-			paddle2 = new Paddle(myposition[0]);
+			paddle5 = new Paddle(myposition[0]);
 		} else if (myposition[1].equals("RIGHT")) {
 			paddle1 = new Paddle(myposition[0]);
 		} else if (myposition[1].equals("LEFT")) {
@@ -115,10 +116,10 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 		// peer0 init
 		if (peer0posi[1].equals("DOWN")) {
-			paddle = new Paddle(peer0posi[0]);
+			paddle4 = new Paddle(peer0posi[0]);
 
 		} else if (peer0posi[1].equals("UP")) {
-			paddle2 = new Paddle(peer0posi[0]);
+			paddle5 = new Paddle(peer0posi[0]);
 		} else if (peer0posi[1].equals("RIGHT")) {
 			paddle1 = new Paddle(peer0posi[0]);
 		} else if (peer0posi[1].equals("LEFT")) {
@@ -127,10 +128,10 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 		// peer1 init
 		if (peer1posi[1].equals("DOWN")) {
-			paddle = new Paddle(peer1posi[0]);
+			paddle4 = new Paddle(peer1posi[0]);
 
 		} else if (peer1posi[1].equals("UP")) {
-			paddle2 = new Paddle(peer1posi[0]);
+			paddle5 = new Paddle(peer1posi[0]);
 		} else if (peer1posi[1].equals("RIGHT")) {
 			paddle1 = new Paddle(peer1posi[0]);
 		} else if (peer1posi[1].equals("LEFT")) {
@@ -139,10 +140,10 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 		// peer2 init
 		if (peer2posi[1].equals("DOWN")) {
-			paddle = new Paddle(peer2posi[0]);
+			paddle4 = new Paddle(peer2posi[0]);
 
 		} else if (peer2posi[1].equals("UP")) {
-			paddle2 = new Paddle(peer2posi[0]);
+			paddle5 = new Paddle(peer2posi[0]);
 		} else if (peer2posi[1].equals("RIGHT")) {
 			paddle1 = new Paddle(peer2posi[0]);
 		} else if (peer2posi[1].equals("LEFT")) {
@@ -150,18 +151,18 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		}
 
 		// com = new Com();
-		ball = new Ball();
-		if (myposition[1].equals("UP")) {
-			Thread ballSend = new Thread(new Runnable() {
+		ball3 = new Ball();
+		if (myposition[1].equals("DOWN")) {
+			Thread ball3Send = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
 					boolean running = true;
 					while (running) {
-						net.broadcast("Ballx " + ball.getX()
-								+ " " + ball.getY() + " " + ball.getVX() + " "
-								+ ball.getVY());
+						net.broadcast("Ballx " + ball3.getX()
+								+ " " + ball3.getY() + " " + ball3.getVX() + " "
+								+ ball3.getVY());
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -172,9 +173,9 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				}
 
 			});
-			ballSend.start();
+			ball3Send.start();
 		}
-		ball_width = 8;
+		ball3_width = 8;
 		ingame = true;
 		// pause = true;
 		power = new Power();
@@ -186,8 +187,8 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		paddle1Extime = 0;
 		paddle3Expand = false;
 		paddle3Extime = 0;
-		paddle2Expand = false;
-		paddle2Extime = 0;
+		paddle5Expand = false;
+		paddle5Extime = 0;
 		// pausetime = System.currentTimeMillis();
 		// comExpand = false;
 		// comExtime = 0;
@@ -243,11 +244,11 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		 */
 		if (ball2_visi) {
 			g.setColor(Color.blue);
-			g.fillOval(ball2.getX(), ball2.getY(), ball_width, ball_width);
+			g.fillOval(ball2.getX(), ball2.getY(), ball3_width, ball3_width);
 		}
 
 		g.setColor(Color.blue);
-		g.fillOval(ball.getX(), ball.getY(), ball_width, ball_width);
+		g.fillOval(ball3.getX(), ball3.getY(), ball3_width, ball3_width);
 
 		drawLives(g);
 		drawPowers(g);
@@ -256,13 +257,13 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 	private void drawPaddels(Graphics g) {
 
-		if (paddle.getvis()) {
+		if (paddle4.getvis()) {
 			if (paddleExpand == false) {
 				g.setColor(Color.yellow);
-				g.fillRect(paddle.getX(), paddle.getY(), 150, 5);
+				g.fillRect(paddle4.getX(), paddle4.getY(), 150, 5);
 			} else {
 				g.setColor(Color.magenta);
-				g.fillRect(paddle.getX(), paddle.getY(), 200, 5);
+				g.fillRect(paddle4.getX(), paddle4.getY(), 200, 5);
 			}
 		}
 		if (paddle1.getvis()) {
@@ -294,15 +295,15 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				g.fillRect(paddle3.getX(), paddle3.getY(), 5, 200);
 			}
 		}
-		if (paddle2.getvis()) {
+		if (paddle5.getvis()) {
 			int y = 75;
-			paddle2.setY(y);
-			if (paddle2Expand == false) {
+			paddle5.setY(y);
+			if (paddle5Expand == false) {
 				g.setColor(Color.yellow);
-				g.fillRect(paddle2.getX(), paddle2.getY(), 150, 5);
+				g.fillRect(paddle5.getX(), paddle5.getY(), 150, 5);
 			} else {
 				g.setColor(Color.magenta);
-				g.fillRect(paddle2.getX(), paddle2.getY(), 200, 5);
+				g.fillRect(paddle5.getX(), paddle5.getY(), 200, 5);
 			}
 		}
 	}
@@ -313,8 +314,8 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 		g.setColor(Color.white);
 		g.setFont(small);
-		g.drawString("Lives: " + paddle.getLives(), 325, 625);
-		g.drawString("Lives: " + paddle2.getLives(), 325, 25);
+		g.drawString("Lives: " + paddle4.getLives(), 325, 625);
+		g.drawString("Lives: " + paddle5.getLives(), 325, 25);
 		g.drawString("Lives: " + paddle3.getLives(), 0, 300);
 		g.drawString("Lives: " + paddle1.getLives(), 610, 300);
 	}
@@ -346,8 +347,8 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		// if (!pause) {
 
 		inGame();
-		if (paddle.getvis()) {
-			paddle.move();
+		if (paddle4.getvis()) {
+			paddle4.move();
 		}
 		if (paddle1.getvis()) {
 			paddle1.move2();
@@ -355,15 +356,15 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		if (paddle3.getvis()) {
 			paddle3.move2();
 		}
-		if (paddle2.getvis()) {
-			paddle2.move();
+		if (paddle5.getvis()) {
+			paddle5.move();
 		}
 		// updatecom();
 		// checkhole();
 		checkCollisions();
 		// updatepower();
 		checkpaddle();
-		ball.move();
+		ball3.move();
 		if (ball2_visi) {
 			ball2.move();
 		}
@@ -388,11 +389,11 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 	 */
 
 	/*
-	 * private void checkhole() { int x = ball.getX(); int y = ball.getY(); if(x
-	 * - hole1x <= 12 ){ if(y - hole1y <= 12){ ball = new Ball(); } } if( x-
-	 * hole3x <= 12 ){ if( hole3y - y <= 12){ ball = new Ball(); } } if( hole2x
-	 * - x <= 12 ){ if(y - hole2y <= 12){ ball = new Ball(); } } if( hole4x - x
-	 * <= 12 ){ if( hole4y - y <= 12){ ball = new Ball(); } }
+	 * private void checkhole() { int x = ball3.getX(); int y = ball3.getY(); if(x
+	 * - hole1x <= 12 ){ if(y - hole1y <= 12){ ball3 = new ball3(); } } if( x-
+	 * hole3x <= 12 ){ if( hole3y - y <= 12){ ball3 = new ball3(); } } if( hole2x
+	 * - x <= 12 ){ if(y - hole2y <= 12){ ball3 = new ball3(); } } if( hole4x - x
+	 * <= 12 ){ if( hole4y - y <= 12){ ball3 = new ball3(); } }
 	 * 
 	 * }
 	 */
@@ -402,14 +403,14 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 			long tempt = System.currentTimeMillis();
 			if (tempt - (paddleExtime) > 45000) {
 				paddleExpand = false;
-				paddle.setEx(false);
+				paddle4.setEx(false);
 			}
 		}
-		if (paddle2Expand == true) {
+		if (paddle5Expand == true) {
 			long tempt = System.currentTimeMillis();
-			if (tempt - (paddle2Extime) > 45000) {
-				paddle2Expand = false;
-				paddle2.setEx(false);
+			if (tempt - (paddle5Extime) > 45000) {
+				paddle5Expand = false;
+				paddle5.setEx(false);
 			}
 		}
 		if (paddle1Expand == true) {
@@ -435,7 +436,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 			power = new Power();
 		}
 		if (ball2_visi) {
-			if (temp - balltimer >= 10000) {
+			if (temp - ball3timer >= 10000) {
 				ball2_visi = false;
 			}
 		}
@@ -443,12 +444,12 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 	}
 
 	private void checkGame() {
-		if (paddle2.getvis()) {
-			if (paddle2.getLives() == 0) {
+		if (paddle5.getvis()) {
+			if (paddle5.getLives() == 0) {
 
 				playercount--;
-				// System.out.println("paddle2 " + playercount);
-				paddle2.setNvis();
+				// System.out.println("paddle5 " + playercount);
+				paddle5.setNvis();
 				if (playercount == 1) {
 					ingame = false;
 				} else if (playercount == 1) {
@@ -456,17 +457,17 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 						winner = "Player1";
 					} else if (paddle3.getLives() != 0) {
 						winner = "Player3";
-					} else if (paddle.getLives() != 0) {
+					} else if (paddle4.getLives() != 0) {
 						winner = "Player";
 					}
 				}
 
 			}
 		}
-		if (paddle.getvis()) {
-			if (paddle.getLives() == 0) {
+		if (paddle4.getvis()) {
+			if (paddle4.getLives() == 0) {
 				playercount -= 1;
-				paddle.setNvis();
+				paddle4.setNvis();
 				// System.out.println("paddle " + playercount);
 				if (playercount == 1) {
 					ingame = false;
@@ -475,7 +476,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 						winner = "Player1";
 					} else if (paddle3.getLives() != 0) {
 						winner = "Player3";
-					} else if (paddle2.getLives() != 0) {
+					} else if (paddle5.getLives() != 0) {
 						winner = "Player2";
 					}
 				}
@@ -490,11 +491,11 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				if (playercount == 1) {
 					ingame = false;
 
-					if (paddle.getLives() != 0) {
+					if (paddle4.getLives() != 0) {
 						winner = "Player";
 					} else if (paddle3.getLives() != 0) {
 						winner = "Player3";
-					} else if (paddle2.getLives() != 0) {
+					} else if (paddle5.getLives() != 0) {
 						winner = "Player2";
 					}
 				}
@@ -511,9 +512,9 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 					if (paddle1.getLives() != 0) {
 						winner = "Player1";
-					} else if (paddle.getLives() != 0) {
+					} else if (paddle4.getLives() != 0) {
 						winner = "Player";
-					} else if (paddle2.getLives() != 0) {
+					} else if (paddle5.getLives() != 0) {
 						winner = "Player2";
 					}
 				}
@@ -530,8 +531,8 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * private void updatecom() { if (ball.getVX() > 0) { if (ball.getX() + 25 >
-	 * com.getX() + 75) com.moveRight(); } else { if (ball.getX() + 25 <
+	 * private void updatecom() { if (ball3.getVX() > 0) { if (ball3.getX() + 25 >
+	 * com.getX() + 75) com.moveRight(); } else { if (ball3.getX() + 25 <
 	 * com.getX() + 75) com.moveLeft(); } }
 	 */
 
@@ -549,11 +550,11 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 	private void checkCollisions() {
 
-		Rectangle paddle1ect = paddle.getBounds();
+		Rectangle paddle1ect = paddle4.getBounds();
 		Rectangle paddle3Rect = paddle3.getBounds2();
 		Rectangle paddle1Rect = paddle1.getBounds2();
-		Rectangle paddle2Rect = paddle2.getBounds();
-		Rectangle ballRect = ball.getBounds();
+		Rectangle paddle5Rect = paddle5.getBounds();
+		Rectangle ball3Rect = ball3.getBounds();
 		// Rectangle comRect = com.getBounds();
 		Rectangle powerRect = power.getBounds();
 		if (ball2_visi) {
@@ -582,7 +583,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				ball2.setVel(temp, velY);
 
 			}
-			if (ball2Rect.intersects(paddle2Rect)) {
+			if (ball2Rect.intersects(paddle5Rect)) {
 
 				int velX = ball2.getVX();
 				int velY = ball2.getVY();
@@ -593,13 +594,13 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 			/*
 			 * if (ball2Rect.intersects(comRect)) {
 			 * 
-			 * System.out.println("ball " + ball.getY() + " " + com.getY() + " "
-			 * + (ball.getY() - com.getY())); int velX = ball2.getVX(); int velY
+			 * System.out.println("ball3 " + ball3.getY() + " " + com.getY() + " "
+			 * + (ball3.getY() - com.getY())); int velX = ball2.getVX(); int velY
 			 * = ball2.getVY(); int temp = -velY; ball2.setVel(velX, temp);
 			 * 
 			 * }
 			 */
-			if (ball2.getX() + ball_width > BOARD_WIDTH_R
+			if (ball2.getX() + ball3_width > BOARD_WIDTH_R
 					|| ball2.getX() < BOARD_WIDTH_L) {
 				int temp = -1 * ball2.getVX();
 
@@ -613,7 +614,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 					}
 
 				}
-				if (ball2.getX() + ball_width > BOARD_WIDTH_R) {
+				if (ball2.getX() + ball3_width > BOARD_WIDTH_R) {
 
 					if (ball2.getY() < 525 && ball2.getY() > 125) {
 
@@ -625,113 +626,113 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				}
 
 			}
-			if (ball2.getY() + ball_width > BOARD_HEIGHT_D
+			if (ball2.getY() + ball3_width > BOARD_HEIGHT_D
 					|| ball2.getY() < BOARD_HEIGHT_U) {
 				int temp = -1 * ball2.getVY();
 				ball2.setVel(ball2.getVX(), temp);
 
 				if (ball2.getY() < BOARD_HEIGHT_U) {
 					if (ball2.getX() < 550 && ball2.getX() > 150) {
-						if (paddle2.getvis()) {
-							paddle2.reduLives();
+						if (paddle5.getvis()) {
+							paddle5.reduLives();
 						}
 					}
 
 				}
-				if (ball2.getY() + ball_width > BOARD_HEIGHT_D) {
+				if (ball2.getY() + ball3_width > BOARD_HEIGHT_D) {
 
 					if (ball2.getX() < 550 && ball2.getX() > 150) {
 
-						if (paddle.getvis()) {
-							paddle.reduLives();
+						if (paddle4.getvis()) {
+							paddle4.reduLives();
 						}
 					}
 
 				}
 			}
-			if (ball2Rect.intersects(ballRect)) {
-				int temp1 = ball.getVX();
-				int temp2 = ball.getVY();
+			if (ball2Rect.intersects(ball3Rect)) {
+				int temp1 = ball3.getVX();
+				int temp2 = ball3.getVY();
 
-				ball.setVel(ball2.getVX(), ball2.getVY());
+				ball3.setVel(ball2.getVX(), ball2.getVY());
 				ball2.setVel(temp1, temp2);
 			}
 		}
 
-		if (ballRect.intersects(paddle1ect)) {
+		if (ball3Rect.intersects(paddle1ect)) {
 
-			int velX = ball.getVX();
-			int velY = ball.getVY();
+			int velX = ball3.getVX();
+			int velY = ball3.getVY();
 			int temp = -velY;
-			ball.setVel(velX, temp);
+			ball3.setVel(velX, temp);
 
 			hitby = "Player";
 
 			if (power.getHitted() == true) {
 				if (power.getId() == 1) {
 
-					ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-							ball.getVY() / Math.abs(ball.getVY()) * 4);
+					ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+							ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 
 					power.setNHitted();
 				}
 			}
 
 		}
-		if (ballRect.intersects(paddle2Rect)) {
+		if (ball3Rect.intersects(paddle5Rect)) {
 
-			int velX = ball.getVX();
-			int velY = ball.getVY();
+			int velX = ball3.getVX();
+			int velY = ball3.getVY();
 			int temp = -velY;
-			ball.setVel(velX, temp);
+			ball3.setVel(velX, temp);
 
 			hitby = "Player2";
 
 			if (power.getHitted() == true) {
 				if (power.getId() == 1) {
 
-					ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-							ball.getVY() / Math.abs(ball.getVY()) * 4);
+					ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+							ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 
 					power.setNHitted();
 				}
 			}
 
 		}
-		if (ballRect.intersects(paddle3Rect)) {
+		if (ball3Rect.intersects(paddle3Rect)) {
 
-			int velX = ball.getVX();
-			int velY = ball.getVY();
+			int velX = ball3.getVX();
+			int velY = ball3.getVY();
 			int temp = -velX;
-			ball.setVel(temp, velY);
+			ball3.setVel(temp, velY);
 
 			hitby = "Player3";
 
 			if (power.getHitted() == true) {
 				if (power.getId() == 1) {
 
-					ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-							ball.getVY() / Math.abs(ball.getVY()) * 4);
+					ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+							ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 
 					power.setNHitted();
 				}
 			}
 
 		}
-		if (ballRect.intersects(paddle1Rect)) {
+		if (ball3Rect.intersects(paddle1Rect)) {
 
-			int velX = ball.getVX();
-			int velY = ball.getVY();
+			int velX = ball3.getVX();
+			int velY = ball3.getVY();
 			int temp = -velX;
-			ball.setVel(temp, velY);
+			ball3.setVel(temp, velY);
 
 			hitby = "Player1";
 
 			if (power.getHitted() == true) {
 				if (power.getId() == 1) {
 
-					ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-							ball.getVY() / Math.abs(ball.getVY()) * 4);
+					ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+							ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 
 					power.setNHitted();
 				}
@@ -739,29 +740,29 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 		}
 
-		if (ball.getX() + ball_width > BOARD_WIDTH_R
-				|| ball.getX() < BOARD_WIDTH_L) {
-			int temp = -1 * ball.getVX();
+		if (ball3.getX() + ball3_width > BOARD_WIDTH_R
+				|| ball3.getX() < BOARD_WIDTH_L) {
+			int temp = -1 * ball3.getVX();
 
-			ball.setVel(temp, ball.getVY());
+			ball3.setVel(temp, ball3.getVY());
 
-			if (ball.getX() < BOARD_WIDTH_L) {
-				if (ball.getY() < 525 && ball.getY() > 125) {
+			if (ball3.getX() < BOARD_WIDTH_L) {
+				if (ball3.getY() < 525 && ball3.getY() > 125) {
 					if (paddle3.getvis()) {
 						paddle3.reduLives();
 					}
 				}
 				if (power.getHitted() == true) {
 					if (power.getId() == 1) {
-						ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-								ball.getVY() / Math.abs(ball.getVY()) * 4);
+						ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+								ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 						power.setNHitted();
 					}
 				}
 			}
-			if (ball.getX() + ball_width > BOARD_WIDTH_R) {
+			if (ball3.getX() + ball3_width > BOARD_WIDTH_R) {
 
-				if (ball.getY() < 525 && ball.getY() > 125) {
+				if (ball3.getY() < 525 && ball3.getY() > 125) {
 
 					if (paddle1.getvis()) {
 						paddle1.reduLives();
@@ -769,45 +770,45 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 				}
 				if (power.getHitted() == true) {
 					if (power.getId() == 1) {
-						ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-								ball.getVY() / Math.abs(ball.getVY()) * 4);
+						ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+								ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 						power.setNHitted();
 					}
 				}
 			}
 
 		}
-		if (ball.getY() + ball_width > BOARD_HEIGHT_D
-				|| ball.getY() < BOARD_HEIGHT_U) {
-			int temp = -1 * ball.getVY();
-			ball.setVel(ball.getVX(), temp);
+		if (ball3.getY() + ball3_width > BOARD_HEIGHT_D
+				|| ball3.getY() < BOARD_HEIGHT_U) {
+			int temp = -1 * ball3.getVY();
+			ball3.setVel(ball3.getVX(), temp);
 
-			if (ball.getY() < BOARD_HEIGHT_U) {
-				if (ball.getX() < 550 && ball.getX() > 150) {
-					if (paddle2.getvis()) {
-						paddle2.reduLives();
+			if (ball3.getY() < BOARD_HEIGHT_U) {
+				if (ball3.getX() < 550 && ball3.getX() > 150) {
+					if (paddle5.getvis()) {
+						paddle5.reduLives();
 					}
 				}
 				if (power.getHitted() == true) {
 					if (power.getId() == 1) {
-						ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-								ball.getVY() / Math.abs(ball.getVY()) * 4);
+						ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+								ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 						power.setNHitted();
 					}
 				}
 			}
-			if (ball.getY() + ball_width > BOARD_HEIGHT_D) {
+			if (ball3.getY() + ball3_width > BOARD_HEIGHT_D) {
 
-				if (ball.getX() < 550 && ball.getX() > 150) {
+				if (ball3.getX() < 550 && ball3.getX() > 150) {
 
-					if (paddle.getvis()) {
-						paddle.reduLives();
+					if (paddle4.getvis()) {
+						paddle4.reduLives();
 					}
 				}
 				if (power.getHitted() == true) {
 					if (power.getId() == 1) {
-						ball.setVel(ball.getVX() / Math.abs(ball.getVX()) * 3,
-								ball.getVY() / Math.abs(ball.getVY()) * 4);
+						ball3.setVel(ball3.getVX() / Math.abs(ball3.getVX()) * 3,
+								ball3.getVY() / Math.abs(ball3.getVY()) * 4);
 						power.setNHitted();
 					}
 				}
@@ -816,7 +817,7 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		if (power.getVisible() == true) {
 			if (hitby.equals("Player") || hitby.equals("Player1")
 					|| hitby.equals("Player2") || hitby.equals("Player3")) {
-				if (ballRect.intersects(powerRect)) {
+				if (ball3Rect.intersects(powerRect)) {
 
 					power.setHitted();
 					power.setNotVisible();
@@ -824,22 +825,22 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 					int tempid = power.getId();
 					if (tempid == 0) {
 						if (hitby.equals("Player")) {
-							ball = new Ball();
-							if (paddle.getvis()) {
-								paddle.reduLives();
+							ball3 = new Ball();
+							if (paddle4.getvis()) {
+								paddle4.reduLives();
 							}
 						} else if (hitby.equals("Player2")) {
-							ball = new Ball();
-							if (paddle2.getvis()) {
-								paddle2.reduLives();
+							ball3 = new Ball();
+							if (paddle5.getvis()) {
+								paddle5.reduLives();
 							}
 						} else if (hitby.equals("Player1")) {
-							ball = new Ball();
+							ball3 = new Ball();
 							if (paddle1.getvis()) {
 								paddle1.reduLives();
 							}
 						} else if (hitby.equals("Player3")) {
-							ball = new Ball();
+							ball3 = new Ball();
 							if (paddle3.getvis()) {
 								paddle3.reduLives();
 							}
@@ -847,20 +848,20 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 
 						}
 					} else if (tempid == 1) {
-						int tempvx = ball.getVX();
-						int tempvy = ball.getVY();
+						int tempvx = ball3.getVX();
+						int tempvy = ball3.getVY();
 
-						ball.setVel(2 * tempvx, 2 * tempvy);
+						ball3.setVel(2 * tempvx, 2 * tempvy);
 					} else if (tempid == 2) {
 						if (hitby.equals("Player")) {
 							paddleExpand = true;
-							paddle.setEx(true);
+							paddle4.setEx(true);
 							paddleExtime = System.currentTimeMillis();
 						}
 						if (hitby.equals("Player2")) {
-							paddle2Expand = true;
-							paddle2.setEx(true);
-							paddle2Extime = System.currentTimeMillis();
+							paddle5Expand = true;
+							paddle5.setEx(true);
+							paddle5Extime = System.currentTimeMillis();
 						}
 						if (hitby.equals("Player3")) {
 							paddle3Expand = true;
@@ -873,11 +874,11 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 							paddle1Extime = System.currentTimeMillis();
 						}
 					} else {
-						ball2 = new Ball(ball.getX() - ball_width, ball.getY());
-						ball2.setVel(ball.getVX(), -ball.getVY());
+						ball2 = new Ball(ball3.getX() - ball3_width, ball3.getY());
+						ball2.setVel(ball3.getVX(), -ball3.getVY());
 						ball2_visi = true;
-						ball.setVel(-ball.getVX(), ball.getVY());
-						balltimer = System.currentTimeMillis();
+						ball3.setVel(-ball3.getVX(), ball3.getVY());
+						ball3timer = System.currentTimeMillis();
 					}
 				}
 			} else {
@@ -891,9 +892,9 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (myposition[1].equals("DOWN"))
-			paddle.keyReleased(e);
+			paddle4.keyReleased(e);
 			if (myposition[1].equals("UP"))
-			paddle2.keyReleased(e);
+			paddle5.keyReleased(e);
 			if (myposition[1].equals("RIGHT")) 
 			paddle1.keyReleased2(e);
 			if (myposition[1].equals("LEFT"))
@@ -906,21 +907,19 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 		
 			
 			if (myposition[1].equals("DOWN")) {
-				paddle.keyPressed(e);
+				paddle4.keyPressed(e);
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					net.broadcast("Left " + paddle.getX() + " "	+ paddle.getDx() + " " + paddle.getName());
+					net.broadcast("Left " + paddle4.getX() + " " + paddle4.getDx() + " " + paddle4.getName());
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					net.broadcast("Right " + paddle.getX() + " "+ paddle.getDx() + " " + paddle.getName());
+					net.broadcast("Right " + paddle4.getX() + " " + paddle4.getDx() + " " + paddle4.getName());
 				}
 			}
 			if (myposition[1].equals("UP")) {
-				paddle2.keyPressed(e);
+				paddle5.keyPressed(e);
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					net.broadcast("Left " + paddle2.getX() + " "
-							+ paddle2.getDx() + " " + paddle2.getName());
+					net.broadcast("Left " + paddle5.getX() + " " + paddle5.getDx() + " " + paddle5.getName());
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					net.broadcast("Right " + paddle2.getX()
-							+ " " + paddle2.getDx() + " " + paddle2.getName());
+					net.broadcast("Right " + paddle5.getX()	+ " " + paddle5.getDx() + " " + paddle5.getName());
 				}
 			}
 //			paddle1.keyPressed2(e);
@@ -928,11 +927,9 @@ public class CustomBoard2 extends JPanel implements ActionListener {
 			if (myposition[1].equals("RIGHT")) {
 				paddle1.keyPressed2(e);
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
-					net.broadcast("UP " + paddle1.getY() + " "
-							+ paddle1.getDy() + " " + paddle1.getName());
+					net.broadcast("UP " + paddle1.getY() + " " + paddle1.getDy() + " " + paddle1.getName());
 				} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					net.broadcast("DOWN " + paddle1.getY() + " "
-							+ paddle1.getDy() + " " + paddle1.getName());
+					net.broadcast("DOWN " + paddle1.getY() + " " + paddle1.getDy() + " " + paddle1.getName());
 				}
 			}
 			if (myposition[1].equals("LEFT")) {
