@@ -98,7 +98,7 @@ public class Optionpane extends JPanel {
 		pane.add(new JLabel("Name:"));
 		nameField = new JTextField(10);
 		nameField.setText("");
-		nameField.setEnabled(false);
+		nameField.setEnabled(true);
 		nameField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 
@@ -119,14 +119,14 @@ public class Optionpane extends JPanel {
 
 					}
 				});
-				pane.add(hnameField);
-				add(pane);
+				//pane.add(hnameField);
+				//add(pane);
 				
 		// Port input
 		pane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pane.add(new JLabel("Port:"));
 		portField = new JTextField(10);
-		portField.setEnabled(false);
+		portField.setEnabled(true);
 		portField.setText("");
 		portField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
@@ -147,8 +147,8 @@ public class Optionpane extends JPanel {
 						
 					}
 				});
-				pane.add(hportField);
-				add(pane);
+				//pane.add(hportField);
+				//add(pane);
 
 		// Host/guest option
 		buttonListener = new ActionAdapter() {
@@ -160,8 +160,8 @@ public class Optionpane extends JPanel {
 					maxPlayerField.setEnabled(true);
 					maxPlayerField.setText("");
 					playerJoinedField.setEnabled(false);
-					nameField.setEnabled(false);
-					portField.setEnabled(false);
+					nameField.setEnabled(true);
+					portField.setEnabled(true);
 					ipField.setText("localhost");
 					hostIP = "localhost";
 				} else {
@@ -223,7 +223,7 @@ public class Optionpane extends JPanel {
 		buttonListener = new ActionAdapter() {
 			public void actionPerformed(ActionEvent e) {
 			
-				String name, ip, port,hostport,hostname,hostip;
+				String name, ip, port,hostport,hostname,hostip,max;
 				
 				if (isHost) {
 					try {
@@ -232,12 +232,15 @@ public class Optionpane extends JPanel {
 						port=hportField.getText();
 						name=hnameField.getText();
 						///
-						port="1234";
-						name="rajat";
-						ip="192.168.1.17";
-						maxPlayerField.setText("2");
+//						port="1234";
+//						name="rajat";
+//						ip="192.168.1.17";
+//						maxPlayerField.setText("4");
+						port = portField.getText();
+						name = nameField.getText();
+						max = maxPlayerField.getText();
 						///
-						net=new network("kapoor","237.0.0.1",1237,2);
+						net=new network(name,"237.0.0.1",1237,Integer.valueOf(max));
 						//net.addclient(new client("kapoor",1237,"237.0.0.1",1234));
 //						info my =new info(ip, name,Integer.valueOf(port));
 //						network =new network();
@@ -302,18 +305,23 @@ public class Optionpane extends JPanel {
 						port=portField.getText();
 						name=nameField.getText();
 						///
-						port="1235";
-						name="raja";
-						hostport="1234";
-						hostname="rajat";
-						hostip="127.0.0.1";
+//						port="1235";
+//						name="raja";
+//						hostport="1234";
+//						hostname="rajat";
+//						hostip="127.0.0.1";
+						
+						port = portField.getText();
+						name = nameField.getText();
+						max = maxPlayerField.getText();
 						///
-						network net=new network("rajat","237.0.0.1",1234,2);
-						net.addclient(new client("rajat",1234,"237.0.0.1",1237));
-//						info my =new info(hostip,hostname, Integer.valueOf(hostport));
-//						info peer =new info(ip, name,Integer.valueOf(port));
-//						network =new network();
-//						network.start(peer,my);
+						net=new network(name,"237.0.0.1",Integer.valueOf(port),Integer.valueOf(max));
+						net.addclient(new client(name,Integer.valueOf(port),"237.0.0.1",1237));
+//						net=new network("jay-LEFT","237.0.0.1",1235,4);
+//						net.addclient(new client("jay-LEFT",1235,"237.0.0.1",1237));
+//						net=new network("jaya-DOWN","237.0.0.1",1236,4);
+//						net.addclient(new client("jaya-DOWN",1236,"237.0.0.1",1237));
+
 						Thread td = new Thread(new Runnable() {
 							@Override
 							public void run() {
@@ -322,7 +330,7 @@ public class Optionpane extends JPanel {
 									System.out.println(network.listofpeers.size());
 									
 									int maxPlayers=Integer.valueOf(maxPlayerField.getText());
-									if(net.listofpeers.size()==maxPlayers-1){
+									if(network.listofpeers.size()==maxPlayers-1){
 										running =false;
 										try {
 											Thread.sleep(5000);
@@ -330,7 +338,7 @@ public class Optionpane extends JPanel {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
-										PlayGame ex = new PlayGame(maxPlayers,net.listofpeers.size(),net,"DOWN");
+										PlayGame ex = new PlayGame(maxPlayers,network.listofpeers.size(),net,"DOWN");
 										   ex.setVisible(true);
 //										PlayGame ex = new PlayGame(2,0);
 //										ex.setVisible(true);

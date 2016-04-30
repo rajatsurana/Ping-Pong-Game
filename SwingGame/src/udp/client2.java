@@ -10,7 +10,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class client extends Thread {
+public class client2 extends Thread {
 //	public interface funct{
 //		boolean isalreadyconnected(Integer port);
 //		void addclient(client client);
@@ -24,7 +24,7 @@ public class client extends Thread {
 	String name=null;
 	MulticastSocket socket;
 	InetAddress group;
-	public client(String servername,Integer serverport,String ip,Integer port){
+	public client2(String servername,Integer serverport,String ip,Integer port){
 		this.servername=servername;
 		this.serverport=serverport;
 		this.ip=ip;
@@ -92,12 +92,7 @@ public class client extends Thread {
 		}
 	}
 	public void process(String line){
-		if(CustomBoard.paddle!=null){
-			processCust(line);
-		}else{
-			processCust2(line);
-		}
-		
+		processCust(line);
 		if(line.startsWith("joined")){
 			//System.out.println(line);
 			   String[] lines =line.split(" ");
@@ -134,85 +129,6 @@ public class client extends Thread {
 				   int x=Integer.valueOf(lines[1]);
 				   int dx =Integer.valueOf(lines[2]);
 				   String name =lines[3];
-				   System.out.println(name+" "+CustomBoard.paddle.getName()+" "+CustomBoard.paddle2.getName());
-				   if(CustomBoard.paddle.getName().equals(name)){
-					   CustomBoard.paddle.setX(x);
-					   CustomBoard.paddle.setDx(dx);
-					   
-				   }
-				   else if(CustomBoard.paddle2.getName().equals(name)){
-					   
-					   CustomBoard.paddle2.setX(x);//(400-x-150);
-					   CustomBoard.paddle2.setDx(dx);//(-dx);
-				   }
-//				   else{
-//					   CustomBoard.paddle2.setX(x);//(400-x-150);
-//					   CustomBoard.paddle2.setDx(dx);//(-dx);
-//				   }
-				   
-			   }
-			   
-		   }
-		//else
-//		   if(line.startsWith("L2")||line.startsWith("R2")){
-//			   String[] lines =line.split(" ");
-//			   if(!lines[1].equals("") && !lines[2].equals("")){
-//				   int x=Integer.valueOf(lines[1]);
-//				   int dx =Integer.valueOf(lines[2]);
-//				   CustomBoard.paddle.setX(400-x-150);
-//				   CustomBoard.paddle.setDx(-dx);
-//				   
-//			   }
-//			   
-//		   }
-//		   if(line.startsWith("BVel")){
-//			   String[] lines =line.split(" ");
-//			   if(!lines[1].equals("") && !lines[2].equals("")){
-//				   int vx=Integer.valueOf(lines[1]);
-//				   int vy=Integer.valueOf(lines[2]);
-//				   //CustomBoard.ball.setVel(-vx, -vy);
-//			   }
-//			  		   
-//		   }
-//		   if(line.startsWith("BXY")){
-//			   String[] lines =line.split(" ");
-//			 if(!lines[1].equals("") && !lines[2].equals("")){
-//			   int x=Integer.valueOf(lines[1]);
-//			   int y=Integer.valueOf(lines[2]);
-//			   //CustomBoard.ball.setXY(400-x-25,400-y-25);
-//			 }
-//		   }
-		   if(line.startsWith("Ballx")){
-			   String[] lines =line.trim().split(" ");
-			   System.out.println(line.trim());
-				 if(!lines[1].equals("") && !lines[2].equals("") && !lines[3].equals("") && !lines[4].equals("")){
-				   int x=Integer.valueOf(lines[1]);
-				   int y=Integer.valueOf(lines[2]);
-				   int z = Integer.valueOf(lines[3]);
-				   int w = Integer.valueOf(lines[4]);
-				   System.out.println(x+":"+y+":"+z+":"+w);			   
-					   CustomBoard.ball.setX(x);
-					   CustomBoard.ball.setY(y);
-					   CustomBoard.ball.setVel(z,w);
-					  // CustomBoard.ball.setVY(w);
-//			
-				  
-				   //CustomBoard.ball.setXY(400-x-25,400-y-25);
-				 }  
-		   }
-		
-	}
-	
-	private void processCust2(String line) {
-		// TODO Auto-generated method stub
-		
-		if(line.startsWith("Left")||line.startsWith("Right")){
-			System.out.println(line.trim().length() +" :len");
-			   String[] lines =line.trim().split(" ");
-			   if(!lines[1].equals("") && !lines[2].equals("")){
-				   int x=Integer.valueOf(lines[1]);
-				   int dx =Integer.valueOf(lines[2]);
-				   String name =lines[3];
 				   System.out.println(name+" "+CustomBoard2.paddle.getName()+" "+CustomBoard2.paddle2.getName());
 				   if(CustomBoard2.paddle.getName().equals(name)){
 					   CustomBoard2.paddle.setX(x);
@@ -233,24 +149,20 @@ public class client extends Thread {
 			   
 		   }
 		if(line.startsWith("UP")||line.startsWith("DOWN")){
-			   String[] lines =line.trim().split(" ");
-			   System.out.println(line.trim() +" :lenraj");
+			   String[] lines =line.split(" ");
 			   if(!lines[1].equals("") && !lines[2].equals("")){
 				   int y=Integer.valueOf(lines[1]);
 				   int dy =Integer.valueOf(lines[2]);
 				   String name =lines[3];
-				   System.out.println(name+" "+CustomBoard2.paddle1.getName()+" "+CustomBoard2.paddle3.getName());
+				   System.out.println(name+" "+CustomBoard2.paddle.getName()+" "+CustomBoard2.paddle2.getName());
 				   if(CustomBoard2.paddle1.getName().equals(name)){
 					   CustomBoard2.paddle1.setY(y);
 					   CustomBoard2.paddle1.setDy(dy);
 					   
 				   }else if(CustomBoard2.paddle3.getName().equals(name)){
 					   
-					   CustomBoard2.paddle3.setY(y);//(400-x-150);
-					   CustomBoard2.paddle3.setDy(dy);//(-dx);
-				   }else{
-					   CustomBoard2.paddle3.setY(y);//(400-x-150);
-					   CustomBoard2.paddle3.setDy(dy);//(-dx);
+					   CustomBoard2.paddle3.setX(y);//(400-x-150);
+					   CustomBoard2.paddle3.setDx(dy);//(-dx);
 				   }
 				   
 			   }
@@ -265,11 +177,9 @@ public class client extends Thread {
 				   int z = Integer.valueOf(lines[3]);
 				   int w = Integer.valueOf(lines[4]);
 				   System.out.println(x+":"+y+":"+z+":"+w);			   
-//					   CustomBoard2.ball.setX(x);
-//					   CustomBoard2.ball.setY(y);
-//					   CustomBoard2.ball.setVel(z,w);
-				   
-				   
+					   CustomBoard2.ball.setX(x);
+					   CustomBoard2.ball.setY(y);
+					   CustomBoard2.ball.setVel(z,w);
 					  // CustomBoard.ball.setVY(w);
 //			
 				  

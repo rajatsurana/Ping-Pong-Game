@@ -19,6 +19,7 @@ public class Movepaddle extends JFrame {
 	
 	JPanel gp ;
 	JPanel gf;
+	JPanel optionsPane;
 	public Movepaddle() {
 
 		initUI();
@@ -30,7 +31,7 @@ public class Movepaddle extends JFrame {
 		panel.setBackground(Color.BLACK);
 		
 		
-		JPanel optionsPane = new Optionpane(new GridLayout(4, 1));
+		optionsPane = new Optionpane(new GridLayout(4, 1));
 		JButton single = new JButton("Single Player Mode");
 
 		single.addMouseListener(new java.awt.event.MouseAdapter() {

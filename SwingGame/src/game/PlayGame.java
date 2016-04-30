@@ -18,11 +18,13 @@ public PlayGame(int max , int peers,network net,String pos) {
     }
     
     private void initUI(int max,int peers,network net,String pos) {
-        //if(max==2 && peers==1){
+        if(max==2 && peers==1){
         	add(new CustomBoard(max,peers, net, pos));//network.peermanage.listofpeers.get(0),
-//        }else{
-//        	add(new Board());
-//        }
+        }else if (max==4){
+        	add(new CustomBoard2(max,peers, net, pos));
+        }else{
+        	add(new Board());
+        }
         
         
         setSize(750, 700);

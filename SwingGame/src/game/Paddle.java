@@ -112,7 +112,26 @@ public class Paddle {
 		}
 
 	}
+	public void move2() {
+//System.out.println("move2 : "+ y);
+		if (dy != 0) {
+			y += dy;
+		}
 
+		if (y < 125) {
+			y = 125;
+		}
+		if (!expanded) {
+			if (y > 375) {
+				y = 375;
+			}
+		} else {
+			if (y > 325) {
+				y = 325;
+			}
+		}
+
+	}
 	public int getLives() {
 
 		return lives;
@@ -196,30 +215,48 @@ public class Paddle {
 			dy = 0;
 		}
 	}
+	public void keyReleased2(KeyEvent e) {
+
+		int key = e.getKeyCode();
+
+		if (key == KeyEvent.VK_LEFT) {
+			 dx = 0;
+		}
+
+		if (key == KeyEvent.VK_RIGHT) {
+			 dx = 0;
+		}
+
+		if (key == KeyEvent.VK_UP) {
+			//dy = 0;
+		}
+
+		if (key == KeyEvent.VK_DOWN) {
+			//dy = 0;
+		}
+	}
 	public void keyPressed2(KeyEvent e){
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_A) {
-			if (x > 150) {
-				dx = -1;
+		if (key == KeyEvent.VK_UP) {
+			if (y > 150) {
+				dy = -1;
 			} else {
-				dx = 0;
+				dy = 0;
 			}
-	    	
-	    }
+		}
 
-		
-		if (key == KeyEvent.VK_D) {
+		if (key == KeyEvent.VK_DOWN) {
 			if (!expanded) {
-				if (x < 400) {
-					dx = 1;
+				if (y < 375) {
+					dy = 1;
 				} else {
-					dx = 0;
+					dy = 0;
 				}
 			} else {
-				if (x < 350) {
-					dx = 1;
+				if (y < 325) {
+					dy = 1;
 				} else {
-					dx = 0;
+					dy = 0;
 				}
 			}
 		}
@@ -233,4 +270,13 @@ public class Paddle {
 		}
 
 	}
+	public Rectangle getBounds2() {
+		if (expanded == false) {
+			return new Rectangle(x, y, 5, 150);
+		} else {
+			return new Rectangle(x, y, 5, 200);
+		}
+
+	}
+	
 }

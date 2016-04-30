@@ -94,7 +94,7 @@ public class CustomBoard extends JPanel implements ActionListener {
 					while(running){
 						net.broadcast("Ballx " + ball.getX() + " "+ ball.getY() + " " +ball.getVX() + " "+ ball.getVY() );
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(10);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -396,8 +396,10 @@ public class CustomBoard extends JPanel implements ActionListener {
 			}
 
 			if (ball2Rect.intersects(paddle2Rect)) {
+				//System.out.println("inside");
 
 				if (Math.abs(ball2.getVY() - paddle2.getY()) < 4) {
+					
 					ball2.setVel(-ball2.getVX(), ball2.getVY());
 				} else {
 					int velX = ball2.getVX();
